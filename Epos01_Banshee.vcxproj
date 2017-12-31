@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="OptimizedDebug|x64">
+      <Configuration>OptimizedDebug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D2E98CBD-48CE-31E9-9062-E4E43C7E1AE8}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>Epos</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Dev\BansheeEngine\bin\x64\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ExampleGettingStarted.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Epos01_Banshee</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">D:\Dev\BansheeEngine\bin\x64\OptimizedDebug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">ExampleGettingStarted.dir\OptimizedDebug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">Epos01_Banshee</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Dev\BansheeEngine\bin\x64\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ExampleGettingStarted.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Epos01_Banshee</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /permissive- /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4530</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Dev\BansheeEngine\lib\x64\Debug\BansheeEngine.lib;D:\Dev\BansheeEngine\lib\x64\Debug\BansheeCore.lib;D:\Dev\BansheeEngine\lib\x64\Debug\BansheeUtility.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Dev/BansheeEngine/lib/x64/Debug/ExampleGettingStarted.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Dev/BansheeEngine/bin/x64/Debug/ExampleGettingStarted.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /permissive- /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>OptimizedDebug/</AssemblerListingLocation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4530</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;CMAKE_INTDIR="OptimizedDebug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;CMAKE_INTDIR=\"OptimizedDebug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Dev\BansheeEngine\lib\x64\OptimizedDebug\BansheeEngine.lib;D:\Dev\BansheeEngine\lib\x64\OptimizedDebug\BansheeCore.lib;D:\Dev\BansheeEngine\lib\x64\OptimizedDebug\BansheeUtility.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Dev/BansheeEngine/lib/x64/OptimizedDebug/ExampleGettingStarted.lib</ImportLibrary>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>D:/Dev/BansheeEngine/bin/x64/OptimizedDebug/ExampleGettingStarted.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /permissive- /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DisableSpecificWarnings>4577;4530</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\.;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeUtility;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeCore;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\..\..\BansheeEngine;D:\Dev\BansheeEngine\Source\BansheeUtility\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Dev\BansheeEngine\lib\x64\Release\BansheeEngine.lib;D:\Dev\BansheeEngine\lib\x64\Release\BansheeCore.lib;D:\Dev\BansheeEngine\lib\x64\Release\BansheeUtility.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Dev/BansheeEngine/lib/x64/Release/ExampleGettingStarted.lib</ImportLibrary>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>D:/Dev/BansheeEngine/bin/x64/Release/ExampleGettingStarted.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -HD:/Dev/BansheeEngine/Source -BD:/Dev/BansheeEngine/Build --check-stamp-file D:/Dev/BansheeEngine/Build/Examples/ExampleGettingStarted/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeSources.cmake;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Dev\BansheeEngine\Build\Examples\ExampleGettingStarted\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">Building Custom Rule D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -HD:/Dev/BansheeEngine/Source -BD:/Dev/BansheeEngine/Build --check-stamp-file D:/Dev/BansheeEngine/Build/Examples/ExampleGettingStarted/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeSources.cmake;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">D:\Dev\BansheeEngine\Build\Examples\ExampleGettingStarted\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='OptimizedDebug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -HD:/Dev/BansheeEngine/Source -BD:/Dev/BansheeEngine/Build --check-stamp-file D:/Dev/BansheeEngine/Build/Examples/ExampleGettingStarted/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Dev/BansheeEngine/Source/Examples/ExampleGettingStarted/CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeSources.cmake;D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Dev\BansheeEngine\Build\Examples\ExampleGettingStarted\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h" />
+    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp" />
+    <ClInclude Include="ForwardDeclarations.h" />
+    <ClInclude Include="The5_config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\ZERO_CHECK.vcxproj">
+      <Project>{9B195266-A0AC-3B1F-8FEE-5E9E386014B9}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeCore\BansheeCore.vcxproj">
+      <Project>{32BF328B-E59E-3795-93EF-2D5A0272087A}</Project>
+      <Name>BansheeCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeEngine\BansheeEngine.vcxproj">
+      <Project>{0D7E1503-BDA3-31D2-AA77-20F1D0655172}</Project>
+      <Name>BansheeEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeFBXImporter\BansheeFBXImporter.vcxproj">
+      <Project>{46C68B47-4F5F-32D1-A3EB-710A138D234C}</Project>
+      <Name>BansheeFBXImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeFontImporter\BansheeFontImporter.vcxproj">
+      <Project>{BA8320A7-7C52-3DD6-A19C-31263C390956}</Project>
+      <Name>BansheeFontImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeFreeImgImporter\BansheeFreeImgImporter.vcxproj">
+      <Project>{086821E6-8870-3D07-84C0-EEE83DB0F922}</Project>
+      <Name>BansheeFreeImgImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeGLRenderAPI\BansheeGLRenderAPI.vcxproj">
+      <Project>{62BDAF7E-E1DF-3DA0-969C-CBCEAC26143E}</Project>
+      <Name>BansheeGLRenderAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeMono\BansheeMono.vcxproj">
+      <Project>{098AF4F9-BA90-3D48-8D2F-447B277D9560}</Project>
+      <Name>BansheeMono</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeOpenAudio\BansheeOpenAudio.vcxproj">
+      <Project>{C75AAA0F-F579-3489-989A-E9B71DE47713}</Project>
+      <Name>BansheeOpenAudio</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheePhysX\BansheePhysX.vcxproj">
+      <Project>{771CBA8F-A97D-33B0-B343-46C51EF7197B}</Project>
+      <Name>BansheePhysX</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeSL\BansheeSL.vcxproj">
+      <Project>{7F01BE35-A205-3D71-BA60-0DBFB460653E}</Project>
+      <Name>BansheeSL</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\BansheeUtility\BansheeUtility.vcxproj">
+      <Project>{411A0B6B-17FD-368A-ADFB-5B5148E0D56C}</Project>
+      <Name>BansheeUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\RenderBeast\RenderBeast.vcxproj">
+      <Project>{A9A77025-7D90-3540-8EC0-69B0E9A79C61}</Project>
+      <Name>RenderBeast</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Dev\BansheeEngine\Build\SBansheeEngine\SBansheeEngine.vcxproj">
+      <Project>{3B8419D8-D16B-3616-AC86-E3C5B44C10FA}</Project>
+      <Name>SBansheeEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp">
+      <Filter>Source Files\Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h">
+      <Filter>Source Files\Example</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardDeclarations.h">
+      <Filter>Source Files\Epos</Filter>
+    </ClInclude>
+    <ClInclude Include="The5_config.h">
+      <Filter>Source Files\Epos</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6284B61F-C780-33FD-9A3B-CF2A75575645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{054FC594-C3ED-3C24-8574-881FEDE1D798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Epos">
+      <UniqueIdentifier>{6993b6aa-928f-4de9-b29c-e524e0ba2622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Example">
+      <UniqueIdentifier>{7a16f408-8b53-47a3-9c49-d2b6b94a87c8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
