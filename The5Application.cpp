@@ -1,5 +1,8 @@
-#include "include_STL.h"
 #include "The5Application.h"
+
+#include "include_STL.h"
+#include "The5_config.h"
+
 #include "CameraFlyer.h"
 
 using namespace bs;
@@ -32,7 +35,7 @@ namespace The5
 		The5_ApplicationDesc.primaryWindowDesc.videoMode = bs::VideoMode(1280,720);
 		The5_ApplicationDesc.primaryWindowDesc.title = "Epos";
 		The5_ApplicationDesc.primaryWindowDesc.fullscreen = false;
-		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = false; //deferred quad needs no depth in the on-screen buffer
+		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = true; //deferred quad needs no depth in the on-screen buffer
 
 		// List of importer plugins we plan on using for importing various resources
 		The5_ApplicationDesc.importers.push_back("BansheeFreeImgImporter"); // For importing textures
@@ -54,7 +57,13 @@ namespace The5
 		Application::onStartUp(); //init banshee first!
 		gDebug().logDebug("Banshee Engine started.");
 
-		subscribeCallbacksToEvents();
+		initDefaultKeyBindings();
+
+		initDefaultAssets();
+
+		initCallbacks();
+
+		initMainCamera();
 	}
 
 	void The5Application::onShutDown()
@@ -76,7 +85,7 @@ namespace The5
 
 //-------------------------------------- Camera ---------------------------------------
 
-	void The5Application::createMainCamera()
+	void The5Application::initMainCamera()
 	{
 		this->mMainCameraSO = SceneObject::create("Main Camera");
 		this->mMainCameraC = mMainCameraSO->addComponent<CCamera>();
@@ -100,9 +109,33 @@ namespace The5
 		mMainCameraSO->lookAt(Vector3(0, 0, 0));
 	}
 
+//-------------------------------------- Input ----------------------------------------
+
+	void The5Application::initDefaultKeyBindings()
+	{
+		auto inputConfig = VirtualInput::instance().getConfiguration();
+
+		// 0 or 1
+		inputConfig->registerButton("Forward", BC_W);
+		inputConfig->registerButton("Back", BC_S);
+		inputConfig->registerButton("Left", BC_A);
+		inputConfig->registerButton("Right", BC_D);
+		inputConfig->registerButton("Forward", BC_UP);
+		inputConfig->registerButton("Back", BC_BACK);
+		inputConfig->registerButton("Left", BC_LEFT);
+		inputConfig->registerButton("Right", BC_RIGHT);
+		inputConfig->registerButton("Shift", BC_LSHIFT);
+		inputConfig->registerButton("RMB", BC_MOUSE_RIGHT);
+
+		//[-1.0, 1.0]
+		inputConfig->registerAxis("Horizontal", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseX));
+		inputConfig->registerAxis("Vertical", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseY));
+
+	}
+
 //------------------------------------- Callbacks -------------------------------------
 
-	void The5Application::subscribeCallbacksToEvents()
+	void The5Application::initCallbacks()
 	{
 		//http://docs.banshee3d.com/Native/events.html "Class methods as event callbacks" ---> std::bind to bind the this-pointer into the callback
 
@@ -139,7 +172,27 @@ namespace The5
 		return The5Application::get().mMainCameraC;
 	}
 
-//-------------------------------------- Asset Loading -------------------------------------
+//-------------------------------------- Assets -------------------------------------
+	
+	void The5Application::initDefaultAssets()
+	{
+		gDebug().logDebug("Loading Default Assets...");
+		defaultPBRShader = BuiltinResources::instance().getBuiltinShader(BuiltinShader::Standard);
+		defaultPBRMaterial = Material::create(defaultPBRShader);
+
+		HTexture defaultTexture_Albedo = loadTexture(TEX_ALBEDO.c_str());
+		HTexture defaultTexture_Normals = loadTexture(TEX_NORMAL.c_str());
+		HTexture defaultTexture_Roughness = loadTexture(TEX_ROUGHNESS.c_str());
+		HTexture defaultTexture_Metalness = loadTexture(TEX_METALNESS.c_str());
+
+		defaultPBRMaterial->setTexture("gAlbedoTex", defaultTexture_Albedo);
+		defaultPBRMaterial->setTexture("gNormalTex", defaultTexture_Normals);
+		defaultPBRMaterial->setTexture("gRoughnessTex", defaultTexture_Roughness);
+		defaultPBRMaterial->setTexture("gMetalnessTex", defaultTexture_Metalness);
+
+		gDebug().logDebug("Done loading Default Assets.");
+	}
+	
 	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale)
 	{
 		Path assetPath = originalFilePath;
@@ -232,5 +285,9 @@ namespace The5
 	}
 
 
+	bs::HMaterial& The5Application::getDefaultPBRMaterial()
+	{
+		return The5Application::get().defaultPBRMaterial;
+	}
 
 }

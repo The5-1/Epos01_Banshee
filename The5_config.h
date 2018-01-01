@@ -14,14 +14,18 @@ namespace The5
 	const std::string DEFAULT_SHADER_VERT = SHADER_PATH + "default.vert.glsl";
 	const std::string DEFAULT_SHADER_FRAG = SHADER_PATH + "default.frag.glsl";
 
-	const std::string MESH_PATH = GLOBAL_ASSET_PATH + "Meshes/";
-	const std::string TEXTURE_PATH = GLOBAL_ASSET_PATH + "Textures/";
+	const std::string GLOBAL_MESH_PATH = GLOBAL_ASSET_PATH + "Meshes/";
+	const std::string GLOBAL_TEXTURE_PATH = GLOBAL_ASSET_PATH + "Textures/";
 
 
 	///Global Sample Assets
 	const std::string SPONZA_FBX = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.FBX";
 	const std::string SPONZA_OBJ = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.obj";
 
-	const std::string UVCHECKER01_PNG = TEXTURE_PATH + "UVchecker01.png";
+	const std::string TEX_UVCHECKER = GLOBAL_TEXTURE_PATH + "UVchecker01.png";
+	const std::string TEX_ALBEDO = GLOBAL_TEXTURE_PATH + "sofa_albedo.png";
+	const std::string TEX_NORMAL = GLOBAL_TEXTURE_PATH + "sofa_normal.png";
+	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "sofa_smoothness.png";
+	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "sofa_metalness.png";
 
 }

@@ -15,7 +15,7 @@ namespace The5
 		/** generate a default startupDesc */
 		static bs::START_UP_DESC defaultStartupDesc();
 
-		///init
+		///start
 		//** shortcut that calls Application::startUp<The5Application>(The5Application::defaultStartupDesc()); */
 		static void start();
 
@@ -30,6 +30,9 @@ namespace The5
 		static bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale = 1.0f);
 		/** import a texture and save it as Banshee .asset if it does not exist yet**/
 		static bs::HTexture loadTexture(const bs::Path& originalFilePath, bool isSRGB = false, bool isCubemap = false, bool isHDR = false);
+		/** get default shader */
+		static bs::HMaterial& getDefaultPBRMaterial();
+
 
 	protected:
 		///private Fields
@@ -45,14 +48,28 @@ namespace The5
 		void postUpdate() override;
 
 		///Setup
+		/** loads default assets */
+		void initDefaultAssets();
 		/** create the main camera SO and Component and attach further components */
-		void createMainCamera();
+		void initMainCamera();
+		/** set default key bindings */
+		void initDefaultKeyBindings();
 
 		///Callbacks
 	    /** method registering all the Callbacks at their corresponding Events*/
-		void subscribeCallbacksToEvents();
+		void initCallbacks();
 		/** handles camera Aspect etc. */
 		void windowResizeCallback();
+
+		///Default Assets
+		bs::HShader defaultPBRShader;
+		bs::HMaterial defaultPBRMaterial;
+
+		bs::HTexture defaultTexture_Albedo;
+		bs::HTexture defaultTexture_Normals;
+		bs::HTexture defaultTexture_Roughness;
+		bs::HTexture defaultTexture_Metalness;
+
 	};
 
 }
