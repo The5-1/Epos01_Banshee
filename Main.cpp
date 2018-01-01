@@ -1,29 +1,6 @@
 ///BansheeEngine includes
-#include "BsApplication.h"
-#include "Resources/BsResources.h"
-#include "Resources/BsBuiltinResources.h"
-#include "Importer/BsImporter.h"
-#include "Importer/BsTextureImportOptions.h"
-#include "Importer/BsMeshImportOptions.h"
-#include "Material/BsMaterial.h"
-#include "Material/BsShader.h"
-#include "Input/BsVirtualInput.h"
-#include "Components/BsCCamera.h"
-#include "Components/BsCRenderable.h"
-#include "Components/BsCLight.h"
-#include "GUI/BsCGUIWidget.h"
-#include "GUI/BsGUILayoutX.h"
-#include "GUI/BsGUILayoutY.h"
-#include "GUI/BsGUIPanel.h"
-#include "GUI/BsGUISpace.h"
-#include "GUI/BsGUILabel.h"
-#include "GUI/BsGUIButton.h"
-#include "GUI/BsGUIListBox.h"
-#include "GUI/BsProfilerOverlay.h"
-#include "RenderAPI/BsRenderAPI.h"
-#include "RenderAPI/BsRenderWindow.h"
-#include "Scene/BsSceneObject.h"
-#include "BsEngineConfig.h"
+#include "include_Banshee.h"
+#include "BansheeHelper.h"
 
 ///STL & Windows includes
 #if BS_PLATFORM == BS_PLATFORM_WIN32
@@ -32,24 +9,10 @@
 
 ///The5 includes
 #include "The5_config.h"
-
-namespace The5
-{
-	void initBansheeApplication()
-	{
-		// Descriptor used for initializing the engine
-		bs::START_UP_DESC startUpDesc;
-
-		// Use default values as specified by the build system
-		startUpDesc.renderAPI = BS_RENDER_API_MODULE;
-		startUpDesc.renderer = BS_RENDERER_MODULE;
-		startUpDesc.audio = BS_AUDIO_MODULE;
-		startUpDesc.physics = BS_PHYSICS_MODULE;
-	}
-
-}
+#include "Logging.h"
 
 using namespace bs;
+using namespace The5;
 
 /** Main entry point into the application. */
 #if BS_PLATFORM == BS_PLATFORM_WIN32
@@ -63,7 +26,28 @@ int CALLBACK WinMain(
 int main()
 #endif
 {
-	Application::startUp( VideoMode(1280, 720),"Epos", false);
+	The5::enableConsole();
+
+	Application::startUp(The5::BansheeHelper::getStartupDesc());
+
+	std::string sponzaPathFBX = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.FBX";
+	std::string sponzaPathOBJ = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.obj";
+	HMesh sponzaMeshFBX = gImporter().import<Mesh>(sponzaPathFBX.c_str());
+	if (sponzaMeshFBX == nullptr) ERR("sponzaMeshFBX was not loaded!");
+	HMesh sponzaMeshOBJ = gImporter().import<Mesh>(sponzaPathOBJ.c_str());
+	if (sponzaMeshOBJ == nullptr) ERR("sponzaMeshOBJ was not loaded!");
+
+	HSceneObject sponzaSO = SceneObject::create("Sponza");
+	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
+	renderable->setMesh(sponzaMeshFBX);
+	//renderable->setMaterial(dragonMaterial);
+
+	//SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
+	//HSceneObject sceneCameraSO = SceneObject::create("MainCamera");
+	//HCamera sceneCamera = sceneCameraSO->addComponent<CCamera>(window);
+	//sceneCameraSO->setPosition(Vector3(40.0f, 30.0f, 230.0f));
+	//sceneCameraSO->lookAt(Vector3(0, 0, 0));
+
 
 	Application::instance().runMainLoop();
 
