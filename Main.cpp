@@ -1,6 +1,5 @@
 ///BansheeEngine includes
 #include "include_Banshee.h"
-#include "BansheeHelper.h"
 
 ///STL & Windows includes
 #if BS_PLATFORM == BS_PLATFORM_WIN32
@@ -10,6 +9,8 @@
 ///The5 includes
 #include "The5_config.h"
 #include "Logging.h"
+#include "The5Application.h"
+#include "BansheeHelper.h"
 
 using namespace bs;
 using namespace The5;
@@ -28,7 +29,20 @@ int main()
 {
 	The5::enableConsole();
 
-	Application::startUp(The5::BansheeHelper::getStartupDesc());
+	Application::startUp<The5Application>(The5Application::defaultStartupDesc());
+
+	Application::instance().runMainLoop();
+
+	Application::shutDown();
+
+#if 0
+	Application::startUp(The5::BansheeHelper::getStartupDesc(WIDTH,HEIGHT));
+	SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
+	window->onResized.connect(&The5::BansheeHelper::renderWindowResizedCallback);
+
+	//gDebug().logDebug("Banshee Debug Message");
+	//gDebug().logWarning("Banshee Warning Message");
+	//gDebug().logError("Banshee Error Message");
 
 	std::string sponzaPathFBX = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.FBX";
 	std::string sponzaPathOBJ = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.obj";
@@ -37,10 +51,40 @@ int main()
 	HMesh sponzaMeshOBJ = gImporter().import<Mesh>(sponzaPathOBJ.c_str());
 	if (sponzaMeshOBJ == nullptr) ERR("sponzaMeshOBJ was not loaded!");
 
+	LOG(BuiltinResources::getShaderIncludeFolder().toString());
+
+	HShader standartShader = BuiltinResources::instance().getBuiltinShader(BuiltinShader::Standard);
+	HMaterial sponzaMat = Material::create(standartShader);
+
+	/*
+	GPU_PROGRAM_DESC vertProgDesc;
+	vertProgDesc.type = GPT_VERTEX_PROGRAM;
+	vertProgDesc.entryPoint = "main";
+	vertProgDesc.language = "glsl";
+	vertProgDesc.source = DEFAULT_SHADER_VERT.c_str();
+	SPtr<GpuProgram> vertProg = GpuProgram::create(vertProgDesc);
+
+	GPU_PROGRAM_DESC fragProgDesc;
+	fragProgDesc.type = GPT_FRAGMENT_PROGRAM;
+	fragProgDesc.entryPoint = "main";
+	fragProgDesc.language = "glsl";
+	fragProgDesc.source = DEFAULT_SHADER_FRAG.c_str();
+	SPtr<GpuProgram> fragProg = GpuProgram::create(fragProgDesc);
+	*/
+
+	//HShader defaultShaderVert = gImporter().import<Shader>(DEFAULT_SHADER_VERT.c_str());
+	//HShader defaultShaderFrag = gImporter().import<Shader>(DEFAULT_SHADER_FRAG.c_str());
+
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
 	renderable->setMesh(sponzaMeshFBX);
-	//renderable->setMaterial(dragonMaterial);
+	renderable->setMaterial(sponzaMat);
+
+	HSceneObject mainCAmera = BansheeHelper::createCamera(WIDTH, HEIGHT);
+
+	//HSceneObject skyboxSO = SceneObject::create("Skybox");
+	//HSkybox skybox = skyboxSO->addComponent<CSkybox>();
+	//skybox->setTexture(loadTexture(exampleSkyCubemapPath, false, true, true););
 
 	//SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 	//HSceneObject sceneCameraSO = SceneObject::create("MainCamera");
@@ -52,4 +96,5 @@ int main()
 	Application::instance().runMainLoop();
 
 	Application::shutDown();
+#endif
 }

@@ -4,10 +4,14 @@
     <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="BansheeHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BansheeHelper.cpp">
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="The5Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,13 +37,21 @@
     <ClInclude Include="include_STL.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt" />
+    <ClInclude Include="The5Application.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{b766bdcd-0c5c-4f90-8321-15d721156583}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CMake">
+      <UniqueIdentifier>{8bc6cabb-0a86-407b-a43f-72f02c9d4dae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CMakeLists.txt">
+      <Filter>CMake</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

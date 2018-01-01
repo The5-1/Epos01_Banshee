@@ -13,6 +13,9 @@
 #include <map>
 #include <deque> //queue with append and prepend functionality
 
+//functions/callbacks
+#include <functional> //for std::bind for callbacks
+
 //smartpointers
 #include <memory> 
 
@@ -22,4 +25,4 @@
 
 #include <bitset> //for component bitmask
 
-#include <functional> //for std::function //should i want function pointers
+
