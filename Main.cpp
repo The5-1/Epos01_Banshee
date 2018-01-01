@@ -10,7 +10,7 @@
 #include "The5_config.h"
 #include "Logging.h"
 #include "The5Application.h"
-#include "BansheeHelper.h"
+//#include "BansheeHelper.h"
 
 using namespace bs;
 using namespace The5;
@@ -29,8 +29,42 @@ int main()
 {
 	The5::enableConsole();
 
-	Application::startUp<The5Application>(The5Application::defaultStartupDesc());
+	The5Application::start();
 
+	gDebug().logDebug("Loading Assets.");
+	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
+	HTexture uvCheckerTexture = The5Application::loadTexture(UVCHECKER01_PNG.c_str(),1.0f);
+
+	HShader standartShader = BuiltinResources::instance().getBuiltinShader(BuiltinShader::Standard);
+	HMaterial sponzaMat = Material::create(standartShader);
+	sponzaMat->setTexture("gAlbedoTex", uvCheckerTexture);
+
+	HSceneObject sponzaSO = SceneObject::create("Sponza");
+	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
+	renderable->setMesh(sponzaMesh);
+	renderable->setMaterial(sponzaMat);
+
+	HSceneObject lightASO = SceneObject::create("Light A");
+	HSceneObject lightBSO = SceneObject::create("Light B");
+
+	lightASO->setPosition(Vector3(0, 50, 0));
+	lightBSO->setPosition(Vector3(-130, 140, 450));
+
+	HLight lightA = lightASO->addComponent<CLight>();
+	HLight lightB = lightBSO->addComponent<CLight>();
+
+	// Disable physically based attentuation because we want to set our own range
+	lightA->setUseAutoAttenuation(false);
+	lightB->setUseAutoAttenuation(false);
+
+	lightA->setAttenuationRadius(500.0f);
+	lightB->setAttenuationRadius(300.0f);
+
+	lightA->setIntensity(10000.0f);
+	lightB->setIntensity(10000.0f);
+
+
+	gDebug().logDebug("Starting Main Loop.");
 	Application::instance().runMainLoop();
 
 	Application::shutDown();

@@ -15,7 +15,7 @@ namespace The5
 		//gDebug().logDebug("Radius: " + toString(props.getBounds().getSphere().getRadius()));
 	}
 
-	HMesh BansheeHelper::loadMesh(Path path, float scale)
+	HMesh& BansheeHelper::loadMesh(Path path, float scale)
 	{
 		Path assetPath = path;
 		assetPath.setExtension(path.getExtension() + ".asset");
@@ -44,7 +44,7 @@ namespace The5
 		return model;
 	}
 
-	HTexture BansheeHelper::loadTexture(Path path, bool isSRGB, bool isCubemap, bool isHDR)
+	HTexture& BansheeHelper::loadTexture(Path path, bool isSRGB, bool isCubemap, bool isHDR)
 	{
 		Path assetPath = path;
 		assetPath.setExtension(path.getExtension() + ".asset");
@@ -96,23 +96,23 @@ namespace The5
 	{
 		
 		BansheeHelper::mainCameraSO = SceneObject::create(name.c_str());
-		BansheeHelper::mainCamera = cameraSO->addComponent<CCamera>();
+		BansheeHelper::mMainCameraC = cameraSO->addComponent<CCamera>();
 
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 
 		// Add a Camera component that will output whatever it sees into that window 
 		// (You could also use a render texture or another window you created).
-		BansheeHelper::mainCamera->getViewport()->setTarget(window);
+		BansheeHelper::mMainCameraC->getViewport()->setTarget(window);
 
 		/// Set up camera component properties
 		// Set closest distance that is visible. Anything below that is clipped.
-		BansheeHelper::mainCamera->setNearClipDistance(near);
+		BansheeHelper::mMainCameraC->setNearClipDistance(near);
 		// Set farthest distance that is visible. Anything above that is clipped.
-		BansheeHelper::mainCamera->setFarClipDistance(far);
+		BansheeHelper::mMainCameraC->setFarClipDistance(far);
 		// Set aspect ratio depending on the current resolution
-		BansheeHelper::mainCamera->setAspectRatio(width / (float)height);
+		BansheeHelper::mMainCameraC->setAspectRatio(width / (float)height);
 		// camera multi-sample anti-aliasing for better quality
-		BansheeHelper::mainCamera->setMSAACount(masaa);
+		BansheeHelper::mMainCameraC->setMSAACount(masaa);
 		// Add a CameraFlyer component that allows us to move the camera. See CameraFlyer for more information.
 		BansheeHelper::mainCameraSO->addComponent<CameraFlyer>();
 		// Position and orient the camera scene object
@@ -130,7 +130,7 @@ namespace The5
 		BansheeHelper::Window_Width = rwProps.width;
 		BansheeHelper::Window_Height = rwProps.height;
 
-		mainCamera->setAspectRatio(Window_Width / (float)Window_Height);
+		mMainCameraC->setAspectRatio(Window_Width / (float)Window_Height);
 	}
 	*/
 }

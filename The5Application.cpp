@@ -1,12 +1,14 @@
 #include "include_STL.h"
 #include "The5Application.h"
-#include "Logging.h"
 #include "CameraFlyer.h"
 
 using namespace bs;
 
 namespace The5
 {
+
+//---------------------------------Application-------------------------------
+
 	The5Application::The5Application(const bs::START_UP_DESC & desc) :Application(desc) // Pass along the start-up structure to the parent
 	{ }
 
@@ -41,24 +43,18 @@ namespace The5
 		return The5_ApplicationDesc;
 	}
 
-	void The5Application::onStartUp()
+	void The5Application::start()
 	{
-		Application::onStartUp(); //init banshee first!
-
-		subscribeCallbacksToEvents();
-
+		Application::startUp<The5Application>(The5Application::defaultStartupDesc());
 	}
 
-	void The5Application::subscribeCallbacksToEvents()
+	void The5Application::onStartUp()
 	{
-		//http://docs.banshee3d.com/Native/events.html "Class methods as event callbacks" ---> std::bind to bind the this-pointer into the callback
+		gDebug().logDebug("Starting Banshee Engine...");
+		Application::onStartUp(); //init banshee first!
+		gDebug().logDebug("Banshee Engine started.");
 
-		///Window Events
-		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
-		//Resize
-		window->onResized.connect(std::bind(&The5Application::windowResizeCallback, this));
-
-		///... Events
+		subscribeCallbacksToEvents();
 	}
 
 	void The5Application::onShutDown()
@@ -78,45 +74,163 @@ namespace The5
 		
 	}
 
+//-------------------------------------- Camera ---------------------------------------
+
 	void The5Application::createMainCamera()
 	{
-		this->mainCameraSO = SceneObject::create("Main Camera");
-		this->mainCamera = mainCameraSO->addComponent<CCamera>();
+		this->mMainCameraSO = SceneObject::create("Main Camera");
+		this->mMainCameraC = mMainCameraSO->addComponent<CCamera>();
 
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 		const RenderWindowProperties& windowProps = window->getProperties();
 
-		// Add a Camera component that will output whatever it sees into that window 
-		// (You could also use a render texture or another window you created).
-		mainCamera->getViewport()->setTarget(window);
+		mMainCameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
 
 		/// Set up camera component properties
-		// Set closest distance that is visible. Anything below that is clipped.
-		mainCamera->setNearClipDistance(0.005f);
-		// Set farthest distance that is visible. Anything above that is clipped.
-		mainCamera->setFarClipDistance(1000.0f);
-		// Set aspect ratio depending on the current resolution
-		mainCamera->setAspectRatio(windowProps.width / (float)windowProps.height);
-		// camera multi-sample anti-aliasing for better quality
-		mainCamera->setMSAACount(0);
-		// Add a CameraFlyer component that allows us to move the camera. See CameraFlyer for more information.
-		mainCameraSO->addComponent<CameraFlyer>();
-		// Position and orient the camera scene object
-		mainCameraSO->setPosition(Vector3(0.0f, 0.0f, 1.0f));
-		mainCameraSO->lookAt(Vector3(0, 0, 0));
+		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
+		mMainCameraC->setNearClipDistance(0.005f);
+		mMainCameraC->setFarClipDistance(1000.0f);
+		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
+		mMainCameraC->setMSAACount(0);
+
+		/// Add Components
+		mMainCameraSO->addComponent<CameraFlyer>();
+
+		mMainCameraSO->setPosition(Vector3(0.0f, 0.0f, 1.0f));
+		mMainCameraSO->lookAt(Vector3(0, 0, 0));
 	}
 
-	
+//------------------------------------- Callbacks -------------------------------------
+
+	void The5Application::subscribeCallbacksToEvents()
+	{
+		//http://docs.banshee3d.com/Native/events.html "Class methods as event callbacks" ---> std::bind to bind the this-pointer into the callback
+
+		///Window Events
+		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
+		//Resize
+		window->onResized.connect(std::bind(&The5Application::windowResizeCallback, this));
+
+		///... Events
+	}
+
 	void The5Application::windowResizeCallback()
 	{
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow(); //shared poitner will be deleted when this goes out of scope
 		const RenderWindowProperties& windowProps = window->getProperties();
 
 		//recalculate Camera Aspect Ratio
-		if(mainCamera != nullptr) mainCamera->setAspectRatio(windowProps.width / (float)windowProps.height);
+		if(mMainCameraC != nullptr) mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 
 		//resize FBOs
 		//TODO
 	}
+
+//--------------------------------- static access points ------------------------------
+
+	The5Application& The5Application::get()
+	{
+		//I need to get the instance by pointer, since I can't cast a object! Then dereference with *
+		return *static_cast<The5Application*>(Application::instancePtr());
+	}
+
+	bs::HCamera& The5Application::mainCamera()
+	{
+		return The5Application::get().mMainCameraC;
+	}
+
+//-------------------------------------- Asset Loading -------------------------------------
+	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale)
+	{
+		Path assetPath = originalFilePath;
+		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
+
+		//Try loading existing exported Asset
+		gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
+		HMesh model = gResources().load<Mesh>(assetPath);
+		if (model == nullptr) // If Mesh file doesn't exist, import from the source file.
+		{
+			gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
+			// When importing you may specify optional import options that control how is the asset imported.
+			SPtr<ImportOptions> meshImportOptions = Importer::instance().createImportOptions(originalFilePath);
+
+			// rtti_is_of_type checks if the import options are of valid type, in case the provided path is pointing to a
+			// non-mesh resource. This is similar to dynamic_cast but uses Banshee internal RTTI system for type checking.
+			if (rtti_is_of_type<MeshImportOptions>(meshImportOptions))
+			{
+				MeshImportOptions* importOptions = static_cast<MeshImportOptions*>(meshImportOptions.get());
+
+				importOptions->setImportScale(scale);
+			}
+
+			model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
+
+			// Save for later use, so we don't have to import on the next run.
+			gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+			gResources().save(model, assetPath, true);
+		}
+		else
+		{
+			gDebug().logDebug("Existing .asset loaded.");
+		}
+
+		return model;
+	}
+
+	bs::HTexture The5Application::loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR)
+	{
+		Path assetPath = originalFilePath;
+		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
+
+		gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
+		HTexture texture = gResources().load<Texture>(assetPath);
+		if (texture == nullptr) // Texture file doesn't exist, import from the source file.
+		{
+			gDebug().logDebug("Existing .asset not found, importing texture from " + bs::toString(originalFilePath.toPlatformString()));
+			// When importing you may specify optional import options that control how is the asset imported.
+			SPtr<ImportOptions> textureImportOptions = Importer::instance().createImportOptions(originalFilePath);
+
+			// rtti_is_of_type checks if the import options are of valid type, in case the provided path is pointing to a 
+			// non-texture resource. This is similar to dynamic_cast but uses Banshee internal RTTI system for type checking.
+			if (rtti_is_of_type<TextureImportOptions>(textureImportOptions))
+			{
+				TextureImportOptions* importOptions = static_cast<TextureImportOptions*>(textureImportOptions.get());
+
+				// We want maximum number of mipmaps to be generated
+				importOptions->setGenerateMipmaps(true);
+
+				// If the texture is in sRGB space the system needs to know about it
+				importOptions->setSRGB(isSRGB);
+
+				// Ensures we can save the texture contents
+				importOptions->setCPUCached(true);
+
+				// Import as cubemap if needed
+				importOptions->setIsCubemap(isCubemap);
+
+				// If importing as cubemap, assume source is a panorama
+				importOptions->setCubemapSourceType(CubemapSourceType::Cylindrical);
+
+				// Importing using a HDR format if requested
+				if (isHDR) importOptions->setFormat(PF_RG11B10F);
+
+			}
+
+			// Import texture with specified import options
+			texture = gImporter().import<Texture>(originalFilePath, textureImportOptions);
+
+			// Save for later use, so we don't have to import on the next run.
+			gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+			gResources().save(texture, assetPath, true);
+		}
+		else
+		{
+			gDebug().logDebug("Existing .asset loaded.");
+		}
+
+		return texture;
+	}
+
+
 
 }

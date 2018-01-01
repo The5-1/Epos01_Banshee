@@ -15,4 +15,13 @@ namespace The5
 	const std::string DEFAULT_SHADER_FRAG = SHADER_PATH + "default.frag.glsl";
 
 	const std::string MESH_PATH = GLOBAL_ASSET_PATH + "Meshes/";
+	const std::string TEXTURE_PATH = GLOBAL_ASSET_PATH + "Textures/";
+
+
+	///Global Sample Assets
+	const std::string SPONZA_FBX = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.FBX";
+	const std::string SPONZA_OBJ = GLOBAL_ASSET_PATH + "Sponza_Atrium_Png/sponza.obj";
+
+	const std::string UVCHECKER01_PNG = TEXTURE_PATH + "UVchecker01.png";
+
 }
