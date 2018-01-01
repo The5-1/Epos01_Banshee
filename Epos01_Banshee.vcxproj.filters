@@ -1,44 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BansheeHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="The5Application.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="BansheeHelper.cpp">
+      <Filter>Source Files\Banshee</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Logging.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="The5Application.cpp">
+      <Filter>Source Files\Banshee</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ForwardDeclarations.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="The5_config.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include_Banshee.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="BansheeHelper.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Logging.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardDeclarations.h">
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="include_Banshee.h">
+      <Filter>Source Files\Includes</Filter>
     </ClInclude>
     <ClInclude Include="include_STL.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="The5_config.h">
+      <Filter>Source Files\Includes</Filter>
     </ClInclude>
     <ClInclude Include="The5Application.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Banshee</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +47,18 @@
     </Filter>
     <Filter Include="CMake">
       <UniqueIdentifier>{8bc6cabb-0a86-407b-a43f-72f02c9d4dae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Banshee">
+      <UniqueIdentifier>{4295d8a4-8a02-48e8-9fde-e065b40e4e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{1d4271a6-96f3-4b3e-86c4-39eda1c5cfbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper">
+      <UniqueIdentifier>{3b01a91d-ce36-4040-8481-dab8f7df860a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Includes">
+      <UniqueIdentifier>{17b8f92d-d061-4db9-bf33-a3ea763bfe71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
