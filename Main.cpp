@@ -34,40 +34,46 @@ int main()
 	The5::enableConsole();
 
 	The5Application::start();
-	//Application::startUp(VideoMode(1280, 720),"My app",false);
+	//Application::startUp(VideoMode(1280,720), "Epos", false);
 
+	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
-	HSceneObject sunlight_SO = SceneObject::create("Light A");
-	sunlight_SO->setPosition(Vector3(-20, 200, 0));
-	sunlight_SO->lookAt(Vector3(0.0, 0.0, 0.0));
-	HLight sunlight_C = sunlight_SO->addComponent<CLight>();
-	//sunlight_C->setType(LightType::Directional);
-	sunlight_C->setCastsShadow(true);
-	//sunlight_C->setSourceRadius(1.0); //Area light
-	sunlight_C->setUseAutoAttenuation(false);
-	sunlight_C->setAttenuationRadius(1000.0f);
-	sunlight_C->setIntensity(500000.0f);
+	HSceneObject sunlightSO = SceneObject::create("Light A");
+	sunlightSO->setPosition(Vector3(-20, 200, 0));
+	sunlightSO->lookAt(Vector3(0.0, 0.0, 0.0));
+	HLight sunlightC = sunlightSO->addComponent<CLight>();
+	//sunlightC->setType(LightType::Directional);
+	//sunlightC->setSourceRadius(1.0); //Area light, must be 0.25 or so for sun
+	sunlightC->setCastsShadow(true);
+	sunlightC->setUseAutoAttenuation(false);
+	sunlightC->setAttenuationRadius(1000.0f);
+	sunlightC->setIntensity(500000.0f);
 
+	HSceneObject skyboxSO = SceneObject::create("Skybox");
+	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
+	skyboxC->setTexture(The5Application::loadTexture(SKYBOX.c_str(), false, true, true));
+	skyboxC->setBrightness(0.1f);
 
-	gDebug().logDebug("Loading Assets.");
 	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
-	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str(), 1.0f);
+	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str());
 
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
 	sponzaSO_CRenderable->setMesh(sponzaMesh);
 	sponzaSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
 
-	DrawHelper* dh = new DrawHelper();
-	dh->cube(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 5.0, 5.0));
-	dh->setColor(Color(1.0, 0.0, 0.0, 1.0));
-	dh->buildMeshes();
-	dh->getMeshes();
-
 	HSceneObject testSO = SceneObject::create("Test");
 	HRenderable testSO_CRenderable = testSO->addComponent<CRenderable>();
 	testSO_CRenderable->setMesh(The5Application::getDefaultCube());
 	testSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
+
+	gDebug().logDebug("Starting Main Loop.");
+	Application::instance().runMainLoop();
+
+	Application::shutDown();
+
+
+
 	//testSO->setScale(Vector3(0.2,0.2,0.2));
 
 	/*
@@ -78,11 +84,15 @@ int main()
 	}
 	*/
 
-	gDebug().logDebug("Starting Main Loop.");
-	Application::instance().runMainLoop();
+	/*
+	DrawHelper* dh = new DrawHelper();
+	dh->cube(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 5.0, 5.0));
+	dh->setColor(Color(1.0, 0.0, 0.0, 1.0));
+	dh->buildMeshes();
+	dh->getMeshes();
+	*/
 
 
-	Application::shutDown();
 
 
 #if 0 //this works with only The5App
@@ -189,8 +199,8 @@ int main()
 	HSceneObject mainCAmera = BansheeHelper::createCamera(WIDTH, HEIGHT);
 
 	//HSceneObject skyboxSO = SceneObject::create("Skybox");
-	//HSkybox skybox = skyboxSO->addComponent<CSkybox>();
-	//skybox->setTexture(loadTexture(exampleSkyCubemapPath, false, true, true););
+	//HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
+	//skyboxC->setTexture(loadTexture(exampleSkyCubemapPath, false, true, true););
 
 	//SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 	//HSceneObject sceneCameraSO = SceneObject::create("MainCamera");

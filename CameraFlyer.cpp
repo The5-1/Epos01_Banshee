@@ -10,11 +10,11 @@
 
 namespace bs
 {
-	const float CameraFlyer::START_SPEED = 10.0f;
-	const float CameraFlyer::TOP_SPEED = 20.0f;
-	const float CameraFlyer::ACCELERATION = 5.0f;
+	const float CameraFlyer::START_SPEED = 4.0f;
+	const float CameraFlyer::TOP_SPEED = 13.0f;
+	const float CameraFlyer::ACCELERATION = 1.0f;
 	const float CameraFlyer::FAST_MODE_MULTIPLIER = 2.0f;
-	const float CameraFlyer::ROTATION_SPEED = 2.0f;
+	const float CameraFlyer::ROTATION_SPEED = 3.0f;
 
 	/** Wraps an angle so it always stays in [0, 360) range. */
 	Degree wrapAngle(Degree angle)

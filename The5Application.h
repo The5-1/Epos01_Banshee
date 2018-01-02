@@ -10,13 +10,23 @@ namespace The5
 	class The5Application : public bs::Application
 	{
 	public:
+		///Global Settins
+		static const bool _forceRebuildAssetOnInport = false;
+		static const bool _showImportDebug = false;
+
+
+
 		/** constructor */
 		The5Application(const bs::START_UP_DESC& desc);
+
+
+
 		/** generate a default startupDesc */
 		static bs::START_UP_DESC defaultStartupDesc();
 
-		static const bool _forceRebuildAssetOnInport = false;
-		static const bool _showImportDebug = false;
+		/** generate a default startupDesc */
+		static bs::SPtr<bs::RenderSettings> defaultRenderSettings();
+
 
 		///start
 		//** shortcut that calls Application::startUp<The5Application>(The5Application::defaultStartupDesc()); */
@@ -56,9 +66,15 @@ namespace The5
 		bs::HGUIWidget  mGUI_Widget;
 
 		///bs::Application overrides
+		// ---- Don't forget to call the default application methods! ----
+		// ---- Or check ".../BansheeEngine/Source/BansheeEngine/BsApplication.cpp" ----
+		/** calls Application::onStartUp() */
 		void onStartUp() override;
+		/** calls Application::onShutDown() */
 		void onShutDown() override;
+		/** calls Application::preUpdate() */
 		void preUpdate() override;
+		/** calls Application::postUpdate() */
 		void postUpdate() override;
 
 		///Setup

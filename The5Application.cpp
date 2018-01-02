@@ -25,12 +25,7 @@ namespace The5
 		The5_ApplicationDesc.renderer = BS_RENDERER_MODULE;
 		The5_ApplicationDesc.audio = BS_AUDIO_MODULE;
 		The5_ApplicationDesc.physics = BS_PHYSICS_MODULE;
-
-		// Use default values as specified by the build system
-		The5_ApplicationDesc.renderAPI = BS_RENDER_API_MODULE;
-		The5_ApplicationDesc.renderer = BS_RENDERER_MODULE;
-		The5_ApplicationDesc.audio = BS_AUDIO_MODULE;
-		The5_ApplicationDesc.physics = BS_PHYSICS_MODULE;
+		The5_ApplicationDesc.scripting = false; //NOTE: enable scripting here
 
 		// Descriptor used for initializing the primary application window.
 		The5_ApplicationDesc.primaryWindowDesc.videoMode = bs::VideoMode(1280,720);
@@ -38,7 +33,7 @@ namespace The5
 		//The5_ApplicationDesc.primaryWindowDesc.vsync = false; //true is default, setting it to true again crashes
 		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 1;
 		The5_ApplicationDesc.primaryWindowDesc.fullscreen = false;
-		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = true; //deferred quad needs no depth in the on-screen buffer
+		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = false; //deferred quad needs no depth in the on-screen buffer
 		The5_ApplicationDesc.primaryWindowDesc.allowResize = true;
 
 		// List of importer plugins we plan on using for importing various resources
@@ -48,6 +43,32 @@ namespace The5
 		The5_ApplicationDesc.importers.push_back("BansheeSL"); // For importing shaders);
 
 		return The5_ApplicationDesc;
+	}
+
+	bs::SPtr<RenderSettings> The5Application::defaultRenderSettings()
+	{
+		SPtr<RenderSettings> settings = bs_shared_ptr_new<RenderSettings>();
+		settings->enableLighting = true;
+		settings->enableIndirectLighting = false; //without this everything is black if you dont place lights manually
+		settings->enableShadows = true;
+		settings->enableAutoExposure = false;
+		settings->enableFXAA = false;
+		settings->enableHDR = false;
+		settings->enableTonemapping = false;
+		ScreenSpaceReflectionsSettings ssr_settings;
+		ssr_settings.enabled = false;
+		settings->screenSpaceReflections = ssr_settings;
+		AmbientOcclusionSettings ao_settings;
+		ao_settings.enabled = false;
+		settings->ambientOcclusion = ao_settings;
+		ColorGradingSettings color_settings;
+		color_settings.saturation = 0.0f;
+		color_settings.contrast = 0.0f;
+		color_settings.gain = 0.0f;
+		color_settings.offset = 0.0f;
+		settings->colorGrading = color_settings;
+
+		return settings;
 	}
 
 	void The5Application::start()
@@ -60,8 +81,6 @@ namespace The5
 		gDebug().logDebug("Starting Banshee Engine...");
 		Application::onStartUp(); //init banshee first!
 		gDebug().logDebug("Banshee Engine started.");
-
-		//CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
 		initDefaultKeyBindings();
 
@@ -83,12 +102,12 @@ namespace The5
 
 	void The5Application::preUpdate()
 	{
-		
+		Application::preUpdate();
 	}
 
 	void The5Application::postUpdate()
-	{
-		
+	{	
+		Application::postUpdate();
 	}
 
 //------------------------------------- Renderer --------------------------------------
@@ -105,29 +124,7 @@ namespace The5
 		this->mMainCameraSO = SceneObject::create("Main Camera");
 		this->mMainCameraC = mMainCameraSO->addComponent<CCamera>();
 		mMainCameraC->setMain(true);
-
-		///Render settings
-		SPtr<RenderSettings> settings = mMainCameraC->getRenderSettings();
-		settings->enableLighting = true;
-		settings->enableIndirectLighting = false; //without this everything is black if you dont place lights manually
-		settings->enableShadows = true;
-		settings->enableAutoExposure = false;
-		settings->enableFXAA = false;
-		settings->enableHDR = false;
-		settings->enableTonemapping = false;
-		ScreenSpaceReflectionsSettings ssr_settings;
-		ssr_settings.enabled = false;
-		settings->screenSpaceReflections = ssr_settings;
-		AmbientOcclusionSettings ao_settings;
-		ao_settings.enabled = false;
-		settings->ambientOcclusion = ao_settings;
-		ColorGradingSettings color_settings;
-		color_settings.saturation = 0.0f;
-		color_settings.contrast = 0.0f;
-		color_settings.gain = 0.0f;
-		color_settings.offset = 0.0f;
-		settings->colorGrading = color_settings;
-
+		mMainCameraC->setRenderSettings(The5Application::defaultRenderSettings());
 
 
 		mMainCameraSO->setPosition(Vector3(8.0, 1.0f, 0.0f));
@@ -139,8 +136,8 @@ namespace The5
 
 		/// Set up camera component properties
 		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(0.01f);
-		mMainCameraC->setFarClipDistance(100.0f);
+		mMainCameraC->setNearClipDistance(0.005f);
+		mMainCameraC->setFarClipDistance(1000.0f);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!
 
@@ -157,6 +154,7 @@ namespace The5
 		const RenderWindowProperties& windowProps = window->getProperties();
 		mGUI_CameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
 
+
 		/// Set up camera component properties
 		// Notify the renderer that the camera will only be used for overlays (e.g. GUI) so it can optimize its usage
 		SPtr<RenderSettings> settings = mGUI_CameraC->getRenderSettings();
@@ -170,37 +168,75 @@ namespace The5
 		// Don't clear this camera as that would clear anything the main camera has rendered.
 		mGUI_CameraC->getViewport()->setClearFlags(ClearFlagBits::Empty);
 
+		///Add Profiler Component
+		HProfilerOverlay profilerOverlay = mGUI_SO->addComponent<CProfilerOverlay>(mGUI_CameraC->_getCamera());
+		profilerOverlay->show(ProfilerOverlayType::GPUSamples);
+		profilerOverlay->hide();
+
+		///Setup GUI Widget with main Panel
 		// Add a GUIWidget, the top-level GUI component, parent to all GUI elements. GUI widgets
 		// require you to specify a viewport that they will output rendered GUI elements to.
 		HGUIWidget mGUI_Widget = mGUI_SO->addComponent<CGUIWidget>(mGUI_CameraC);
-
+		// GUI skin defines how are all child elements of the GUI widget renderered. It contains all their styles
+		// and default layout properties. We use the default skin that comes built into Banshee.
+		mGUI_Widget->setSkin(BuiltinResources::instance().getGUISkin());
 		// Depth allows you to control how is a GUI widget rendered in relation to other widgets
 		// Lower depth means the widget will be rendered in front of those with higher. In this case we just
 		// make the depth mid-range as there are no other widgets.
 		mGUI_Widget->setDepth(128);
 
-		// GUI skin defines how are all child elements of the GUI widget renderered. It contains all their styles
-		// and default layout properties. We use the default skin that comes built into Banshee.
-		mGUI_Widget->setSkin(BuiltinResources::instance().getGUISkin());
+		///GUI Layout
+		//The GUIPanel class has no automatic layouting, create a GUILayoutX or GUILayoutX first
+		GUILayout* layoutY = mGUI_Widget->getPanel()->addNewElement<GUILayoutY>();
+		GUILayout* topRow = layoutY->addNewElement<GUILayoutX>();
+		topRow->setHeight(22);
+		GUILayout* centerRow = layoutY->addNewElement<GUILayoutX>();
+		GUILayout* bottomRow = layoutY->addNewElement<GUILayoutX>();
+		bottomRow->setHeight(22);
 
-		// Get the primary GUI panel that stretches over the entire window and add to it a vertical layout
-		// that will be using for vertically positioning messages about toggling profiler overlay.
-		GUILayout* bottomLayout = mGUI_Widget->getPanel()->addNewElement<GUILayoutY>();
+		GUILayout* leftSide = centerRow->addNewElement<GUILayoutY>();
+		leftSide->setWidth(120);
+		centerRow->addNewElement<GUIFlexibleSpace>(); //viewport
+		GUILayout* rightSide = centerRow->addNewElement<GUILayoutY>();
+		rightSide->setWidth(120);
 
-		// Add a flexible space that fills up any remaining area in the layout, making the two labels above be aligned
-		// to the bottom of the GUI widget (and the screen).
-		bottomLayout->addNewElement<GUIFlexibleSpace>();
 
-		// Add a couple of labels to the layout with the needed messages. Labels expect a HString object that
-		// maps into a string table and allows for easily localization. 
-		bottomLayout->addElement(GUILabel::create(HString(L"Press F1 to toggle CPU profiler overlay")));
-		bottomLayout->addElement(GUILabel::create(HString(L"Press F2 to toggle GPU profiler overlay")));
+		topRow->addElement(GUIButton::create(HString(L"Button Top 1")));
+		topRow->addElement(GUIButton::create(HString(L"Button Top 2")));
+		topRow->addElement(GUIButton::create(HString(L"Button Top 3")));
 
-		HProfilerOverlay profilerOverlay = mGUI_SO->addComponent<CProfilerOverlay>(mGUI_CameraC->_getCamera());
-		profilerOverlay->show(ProfilerOverlayType::GPUSamples);
+		bottomRow->addElement(GUIButton::create(HString(L"Button Bottom 1")));
+		bottomRow->addElement(GUIButton::create(HString(L"Button Bottom 2")));
+		bottomRow->addElement(GUIButton::create(HString(L"Button Bottom 3")));
 
-		//bottomLayout->addElement(GUIButton::create(HString(L"Click me!")));
-		//bottomLayout->addElement<GUIButton>(HString(L"Click me too!"));
+		leftSide->addElement(GUIButton::create(HString(L"Button L 1")));
+		leftSide->addElement(GUIButton::create(HString(L"Button L 2")));
+		leftSide->addElement(GUIButton::create(HString(L"Button L 3")));
+
+		rightSide->addElement(GUIButton::create(HString(L"Button R 1")));
+		rightSide->addElement(GUIButton::create(HString(L"Button R 2")));
+		rightSide->addElement(GUIButton::create(HString(L"Button R 3")));
+
+		/*
+		GUILayout* layoutX = mGUI_Widget->getPanel()->addNewElement<GUILayoutX>();
+		GUILayout* sideBarL = layoutX->addNewElement<GUILayoutY>();
+		sideBarL->addNewElement<GUIFlexibleSpace>();
+		sideBarL->addElement(GUIButton::create(HString(L"Side L Button 1")));
+		sideBarL->addElement(GUIButton::create(HString(L"Side L Button 2")));
+		sideBarL->addElement(GUIButton::create(HString(L"Side L Button 3")));
+		layoutX->addNewElement<GUIFlexibleSpace>();
+		GUILayout* sideBarR = layoutX->addNewElement<GUILayoutY>();
+		sideBarR->addElement(GUIButton::create(HString(L"Side R Button 1")));
+		sideBarR->addElement(GUIButton::create(HString(L"Side R Button 2")));
+		sideBarR->addElement(GUIButton::create(HString(L"Side R Button 3")));
+
+		GUILayout* layoutY = mGUI_Widget->getPanel()->addNewElement<GUILayoutY>();
+		layoutY->addNewElement<GUIFlexibleSpace>();
+		GUILayout* bottomBar = layoutY->addNewElement<GUILayoutX>();
+		bottomBar->addElement(GUIButton::create(HString(L"Bottom Button 1")));
+		bottomBar->addElement(GUIButton::create(HString(L"Bottom Button 2")));
+		bottomBar->addElement(GUIButton::create(HString(L"Bottom Button 3")));
+		*/
 
 
 	}
