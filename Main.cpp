@@ -31,7 +31,34 @@ int main()
 #endif
 {
 
-#if 1
+	The5::enableConsole();
+
+	The5Application::start();
+	//Application::startUp(VideoMode(1280, 720),"My app",false);
+
+	gDebug().logDebug("Loading Assets.");
+	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
+	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str(), 1.0f);
+
+	HSceneObject sponzaSO = SceneObject::create("Sponza");
+	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
+	renderable->setMesh(sponzaMesh);
+	renderable->setMaterial(The5Application::getDefaultPBRMaterial());
+
+	//DrawHelper* dh = new DrawHelper();
+	//dh->cube(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 5.0, 5.0));
+	//dh->setColor(Color(1.0, 0.0, 0.0, 1.0));
+	//dh->buildMeshes();
+	//dh->getMeshes();
+
+	gDebug().logDebug("Starting Main Loop.");
+	Application::instance().runMainLoop();
+
+
+	Application::shutDown();
+
+
+#if 0 //this works with only The5App
 
 	The5::enableConsole();
 
@@ -42,15 +69,12 @@ int main()
 	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
 	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str(), 1.0f);
 
-	HShader standartShader = BuiltinResources::instance().getBuiltinShader(BuiltinShader::Standard);
-	HMaterial sponzaMat = Material::create(standartShader);
-	sponzaMat->setTexture("gAlbedoTex", uvCheckerTexture);
-
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
 	renderable->setMesh(sponzaMesh);
 	renderable->setMaterial(The5Application::getDefaultPBRMaterial());
 
+#if 0
 	HSceneObject sceneCameraSO = SceneObject::create("SceneCamera");
 	SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 	const RenderWindowProperties& windowProps = window->getProperties();
@@ -64,23 +88,26 @@ int main()
 	sceneCameraSO->addComponent<CameraFlyer>();
 	sceneCameraSO->setPosition(Vector3(8.0f, 1.0f, 0.0f));
 	sceneCameraSO->lookAt(Vector3(0, 3.0f, 0));
+#endif
 
-	//HSceneObject lightASO = SceneObject::create("Light A");
-	//HSceneObject lightBSO = SceneObject::create("Light B");
-	//lightASO->setPosition(Vector3(0, 50, 0));
-	//lightBSO->setPosition(Vector3(-130, 140, 450));
-	//HLight lightA = lightASO->addComponent<CLight>();
-	//HLight lightB = lightBSO->addComponent<CLight>();
-	//lightA->setUseAutoAttenuation(false);
-	//lightB->setUseAutoAttenuation(false);
-	//lightA->setAttenuationRadius(500.0f);
-	//lightB->setAttenuationRadius(300.0f);
-	//lightA->setIntensity(10000.0f);
-	//lightB->setIntensity(10000.0f);
-
+#if 0
+	HSceneObject lightASO = SceneObject::create("Light A");
+	HSceneObject lightBSO = SceneObject::create("Light B");
+	lightASO->setPosition(Vector3(0, 50, 0));
+	lightBSO->setPosition(Vector3(-130, 140, 450));
+	HLight lightA = lightASO->addComponent<CLight>();
+	HLight lightB = lightBSO->addComponent<CLight>();
+	lightA->setUseAutoAttenuation(false);
+	lightB->setUseAutoAttenuation(false);
+	lightA->setAttenuationRadius(500.0f);
+	lightB->setAttenuationRadius(300.0f);
+	lightA->setIntensity(10000.0f);
+	lightB->setIntensity(10000.0f);
+#endif
 
 	gDebug().logDebug("Starting Main Loop.");
 	Application::instance().runMainLoop();
+
 
 	Application::shutDown();
 

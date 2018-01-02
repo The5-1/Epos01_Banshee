@@ -1,11 +1,17 @@
 #pragma once
 
 #include "BsApplication.h"
-
 #include "CoreThread/BsCoreThread.h"
+
+#include "Scene/BsSceneObject.h"
 
 #include "Resources/BsResources.h"
 #include "Resources/BsBuiltinResources.h"
+
+#include "Mesh/BsMesh.h"
+#include "Mesh/BsMeshBase.h"
+#include "Mesh/BsMeshData.h"
+#include "Mesh/BsMeshUtility.h"
 
 #include "Importer/BsImporter.h"
 #include "Importer/BsTextureImportOptions.h"
@@ -31,8 +37,6 @@
 #include "GUI/BsGUIListBox.h"
 #include "GUI/BsProfilerOverlay.h"
 
-#include "Scene/BsSceneObject.h"
-
 #include "RenderAPI/BsRenderAPI.h"
 #include "RenderAPI/BsRenderWindow.h"
 #include "RenderAPI/BsCommandBuffer.h"
@@ -44,12 +48,11 @@
 #include "RenderAPI/BsIndexBuffer.h"
 #include "RenderAPI/BsVertexDataDesc.h"
 
-#include "Mesh/BsMeshData.h"
-
 #include "Math/BsQuaternion.h"
 
 #include "Utility/BsTime.h"
 #include "Utility/BsTimer.h"
+#include "Utility/BsDrawHelper.h"
 
 #include "Renderer/BsRendererUtility.h"
 

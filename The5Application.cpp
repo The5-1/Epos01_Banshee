@@ -2,6 +2,7 @@
 
 #include "include_STL.h"
 #include "The5_config.h"
+#include "Logging.h"
 
 #include "CameraFlyer.h"
 
@@ -34,8 +35,11 @@ namespace The5
 		// Descriptor used for initializing the primary application window.
 		The5_ApplicationDesc.primaryWindowDesc.videoMode = bs::VideoMode(1280,720);
 		The5_ApplicationDesc.primaryWindowDesc.title = "Epos";
+		//The5_ApplicationDesc.primaryWindowDesc.vsync = false; //true is default, setting it to true again crashes
+		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 1;
 		The5_ApplicationDesc.primaryWindowDesc.fullscreen = false;
 		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = true; //deferred quad needs no depth in the on-screen buffer
+		The5_ApplicationDesc.primaryWindowDesc.allowResize = true;
 
 		// List of importer plugins we plan on using for importing various resources
 		The5_ApplicationDesc.importers.push_back("BansheeFreeImgImporter"); // For importing textures
@@ -61,9 +65,11 @@ namespace The5
 
 		initDefaultAssets();
 
-		initCallbacks();
-
 		initMainCamera();
+
+		initGUI();
+
+		initCallbacks();
 	}
 
 	void The5Application::onShutDown()
@@ -90,23 +96,78 @@ namespace The5
 		this->mMainCameraSO = SceneObject::create("Main Camera");
 		this->mMainCameraC = mMainCameraSO->addComponent<CCamera>();
 
+		mMainCameraSO->setPosition(Vector3(8.0, 1.0f, 0.0f));
+		mMainCameraSO->lookAt(Vector3(0.0, 3.0, 0.0));
+
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 		const RenderWindowProperties& windowProps = window->getProperties();
-
 		mMainCameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
 
 		/// Set up camera component properties
 		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(0.005f);
-		mMainCameraC->setFarClipDistance(1000.0f);
+		mMainCameraC->setNearClipDistance(0.01f);
+		mMainCameraC->setFarClipDistance(100.0f);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
-		mMainCameraC->setMSAACount(0);
+		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!
 
 		/// Add Components
 		mMainCameraSO->addComponent<CameraFlyer>();
+	}
 
-		mMainCameraSO->setPosition(Vector3(0.0f, 0.0f, 1.0f));
-		mMainCameraSO->lookAt(Vector3(0, 0, 0));
+	void The5Application::initGUI()
+	{
+		this->mGUI_SO = SceneObject::create("GUI Camera");
+		this->mGUI_CameraC = mGUI_SO->addComponent<CCamera>();
+	
+		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
+		const RenderWindowProperties& windowProps = window->getProperties();
+		mGUI_CameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
+
+		/// Set up camera component properties
+		// Notify the renderer that the camera will only be used for overlays (e.g. GUI) so it can optimize its usage
+		SPtr<RenderSettings> settings = mGUI_CameraC->getRenderSettings();
+		settings->overlayOnly = true;
+		//render order for multiple cameras writing to the same buffer, 0 for gui
+		mGUI_CameraC->setPriority(0);
+		// We don't care about aspect ratio for GUI camera.
+		mGUI_CameraC->setAspectRatio(1.0f);
+		// This camera should ignore any Renderable objects in the scene
+		mGUI_CameraC->setLayers(0);
+		// Don't clear this camera as that would clear anything the main camera has rendered.
+		mGUI_CameraC->getViewport()->setClearFlags(ClearFlagBits::Empty);
+
+		// Add a GUIWidget, the top-level GUI component, parent to all GUI elements. GUI widgets
+		// require you to specify a viewport that they will output rendered GUI elements to.
+		HGUIWidget mGUI_Widget = mGUI_SO->addComponent<CGUIWidget>(mGUI_CameraC);
+
+		// Depth allows you to control how is a GUI widget rendered in relation to other widgets
+		// Lower depth means the widget will be rendered in front of those with higher. In this case we just
+		// make the depth mid-range as there are no other widgets.
+		mGUI_Widget->setDepth(128);
+
+		// GUI skin defines how are all child elements of the GUI widget renderered. It contains all their styles
+		// and default layout properties. We use the default skin that comes built into Banshee.
+		mGUI_Widget->setSkin(BuiltinResources::instance().getGUISkin());
+
+		// Get the primary GUI panel that stretches over the entire window and add to it a vertical layout
+		// that will be using for vertically positioning messages about toggling profiler overlay.
+		GUILayout* bottomLayout = mGUI_Widget->getPanel()->addNewElement<GUILayoutY>();
+
+		// Add a flexible space that fills up any remaining area in the layout, making the two labels above be aligned
+		// to the bottom of the GUI widget (and the screen).
+		bottomLayout->addNewElement<GUIFlexibleSpace>();
+
+		// Add a couple of labels to the layout with the needed messages. Labels expect a HString object that
+		// maps into a string table and allows for easily localization. 
+		bottomLayout->addElement(GUILabel::create(HString(L"Press F1 to toggle CPU profiler overlay")));
+		bottomLayout->addElement(GUILabel::create(HString(L"Press F2 to toggle GPU profiler overlay")));
+
+		HProfilerOverlay profilerOverlay = mGUI_SO->addComponent<CProfilerOverlay>(mGUI_CameraC->_getCamera());
+
+		//bottomLayout->addElement(GUIButton::create(HString(L"Click me!")));
+		//bottomLayout->addElement<GUIButton>(HString(L"Click me too!"));
+
+
 	}
 
 //-------------------------------------- Input ----------------------------------------
@@ -121,7 +182,7 @@ namespace The5
 		inputConfig->registerButton("Left", BC_A);
 		inputConfig->registerButton("Right", BC_D);
 		inputConfig->registerButton("Forward", BC_UP);
-		inputConfig->registerButton("Back", BC_BACK);
+		inputConfig->registerButton("Back", BC_DOWN);
 		inputConfig->registerButton("Left", BC_LEFT);
 		inputConfig->registerButton("Right", BC_RIGHT);
 		inputConfig->registerButton("Shift", BC_LSHIFT);
@@ -139,7 +200,7 @@ namespace The5
 	{
 		//http://docs.banshee3d.com/Native/events.html "Class methods as event callbacks" ---> std::bind to bind the this-pointer into the callback
 
-		///Window Events
+		///------------ Window Events ------------------
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 		//Resize
 		window->onResized.connect(std::bind(&The5Application::windowResizeCallback, this));
@@ -152,11 +213,11 @@ namespace The5
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow(); //shared poitner will be deleted when this goes out of scope
 		const RenderWindowProperties& windowProps = window->getProperties();
 
+		//Window Resize
 		//recalculate Camera Aspect Ratio
 		if(mMainCameraC != nullptr) mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
-
 		//resize FBOs
-		//TODO
+		//...
 	}
 
 //--------------------------------- static access points ------------------------------
@@ -195,15 +256,16 @@ namespace The5
 	
 	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale)
 	{
+		const bool debugPrint = false;
 		Path assetPath = originalFilePath;
 		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
 
 		//Try loading existing exported Asset
-		gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
+		if(debugPrint) Debug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 		HMesh model = gResources().load<Mesh>(assetPath);
 		if (model == nullptr) // If Mesh file doesn't exist, import from the source file.
 		{
-			gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
+			if(debugPrint) gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
 			// When importing you may specify optional import options that control how is the asset imported.
 			SPtr<ImportOptions> meshImportOptions = Importer::instance().createImportOptions(originalFilePath);
 
@@ -219,12 +281,12 @@ namespace The5
 			model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
 
 			// Save for later use, so we don't have to import on the next run.
-			gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+			if(debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
 			gResources().save(model, assetPath, true);
 		}
 		else
 		{
-			gDebug().logDebug("Existing .asset loaded.");
+			if(debugPrint) gDebug().logDebug("Existing .asset loaded.");
 		}
 
 		return model;
@@ -232,14 +294,15 @@ namespace The5
 
 	bs::HTexture The5Application::loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR)
 	{
+		const bool debugPrint = false;
 		Path assetPath = originalFilePath;
 		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
 
-		gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
+		if (debugPrint) gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 		HTexture texture = gResources().load<Texture>(assetPath);
 		if (texture == nullptr) // Texture file doesn't exist, import from the source file.
 		{
-			gDebug().logDebug("Existing .asset not found, importing texture from " + bs::toString(originalFilePath.toPlatformString()));
+			if (debugPrint) gDebug().logDebug("Existing .asset not found, importing texture from " + bs::toString(originalFilePath.toPlatformString()));
 			// When importing you may specify optional import options that control how is the asset imported.
 			SPtr<ImportOptions> textureImportOptions = Importer::instance().createImportOptions(originalFilePath);
 
@@ -273,17 +336,16 @@ namespace The5
 			texture = gImporter().import<Texture>(originalFilePath, textureImportOptions);
 
 			// Save for later use, so we don't have to import on the next run.
-			gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+			if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
 			gResources().save(texture, assetPath, true);
 		}
 		else
 		{
-			gDebug().logDebug("Existing .asset loaded.");
+			if (debugPrint) gDebug().logDebug("Existing .asset loaded.");
 		}
 
 		return texture;
 	}
-
 
 	bs::HMaterial& The5Application::getDefaultPBRMaterial()
 	{

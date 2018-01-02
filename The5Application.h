@@ -40,6 +40,14 @@ namespace The5
 		bs::HCamera mMainCameraC;
 		/** camera SO */
 		bs::HSceneObject mMainCameraSO;
+		/** GUI SO */
+		bs::HSceneObject mGUI_SO;
+		/** GUI camera */
+		bs::HCamera mGUI_CameraC;
+		/** GUI Widget */
+		bs::HGUIWidget  mGUI_Widget;
+
+
 
 		///bs::Application overrides
 		void onStartUp() override;
@@ -52,6 +60,8 @@ namespace The5
 		void initDefaultAssets();
 		/** create the main camera SO and Component and attach further components */
 		void initMainCamera();
+		/** create the GUI camera SO and Component and attach further components */
+		void initGUI();
 		/** set default key bindings */
 		void initDefaultKeyBindings();
 

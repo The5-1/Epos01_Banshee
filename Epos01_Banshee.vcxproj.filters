@@ -14,6 +14,9 @@
     <ClCompile Include="The5Application.cpp">
       <Filter>Source Files\Banshee</Filter>
     </ClCompile>
+    <ClCompile Include="MeshFactory.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BansheeHelper.h">
@@ -34,11 +37,14 @@
     <ClInclude Include="include_STL.h">
       <Filter>Source Files\Includes</Filter>
     </ClInclude>
-    <ClInclude Include="The5_config.h">
-      <Filter>Source Files\Includes</Filter>
-    </ClInclude>
     <ClInclude Include="The5Application.h">
       <Filter>Source Files\Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="The5_config.h">
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFactory.h">
+      <Filter>Source Files\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +65,9 @@
     </Filter>
     <Filter Include="Source Files\Includes">
       <UniqueIdentifier>{17b8f92d-d061-4db9-bf33-a3ea763bfe71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{fc3c2efe-fc0d-46e0-840b-def97d9775a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
