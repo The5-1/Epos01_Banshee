@@ -36,20 +36,47 @@ int main()
 	The5Application::start();
 	//Application::startUp(VideoMode(1280, 720),"My app",false);
 
+
+	HSceneObject sunlight_SO = SceneObject::create("Light A");
+	sunlight_SO->setPosition(Vector3(-20, 200, 0));
+	sunlight_SO->lookAt(Vector3(0.0, 0.0, 0.0));
+	HLight sunlight_C = sunlight_SO->addComponent<CLight>();
+	//sunlight_C->setType(LightType::Directional);
+	sunlight_C->setCastsShadow(true);
+	//sunlight_C->setSourceRadius(1.0); //Area light
+	sunlight_C->setUseAutoAttenuation(false);
+	sunlight_C->setAttenuationRadius(1000.0f);
+	sunlight_C->setIntensity(500000.0f);
+
+
 	gDebug().logDebug("Loading Assets.");
 	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
 	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str(), 1.0f);
 
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
-	HRenderable renderable = sponzaSO->addComponent<CRenderable>();
-	renderable->setMesh(sponzaMesh);
-	renderable->setMaterial(The5Application::getDefaultPBRMaterial());
+	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
+	sponzaSO_CRenderable->setMesh(sponzaMesh);
+	sponzaSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
 
-	//DrawHelper* dh = new DrawHelper();
-	//dh->cube(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 5.0, 5.0));
-	//dh->setColor(Color(1.0, 0.0, 0.0, 1.0));
-	//dh->buildMeshes();
-	//dh->getMeshes();
+	DrawHelper* dh = new DrawHelper();
+	dh->cube(Vector3(0.0, 0.0, 0.0), Vector3(5.0, 5.0, 5.0));
+	dh->setColor(Color(1.0, 0.0, 0.0, 1.0));
+	dh->buildMeshes();
+	dh->getMeshes();
+
+	HSceneObject testSO = SceneObject::create("Test");
+	HRenderable testSO_CRenderable = testSO->addComponent<CRenderable>();
+	testSO_CRenderable->setMesh(The5Application::getDefaultCube());
+	testSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
+	//testSO->setScale(Vector3(0.2,0.2,0.2));
+
+	/*
+	bs::Vector<bs::HComponent> components = SceneManager::instancePtr()->findComponents<Component>();
+	for (auto c : components)
+	{
+		std::cout << c.getTypeName() << std::endl;
+	}
+	*/
 
 	gDebug().logDebug("Starting Main Loop.");
 	Application::instance().runMainLoop();

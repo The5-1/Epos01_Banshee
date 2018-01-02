@@ -15,6 +15,9 @@ namespace The5
 		/** generate a default startupDesc */
 		static bs::START_UP_DESC defaultStartupDesc();
 
+		static const bool _forceRebuildAssetOnInport = false;
+		static const bool _showImportDebug = false;
+
 		///start
 		//** shortcut that calls Application::startUp<The5Application>(The5Application::defaultStartupDesc()); */
 		static void start();
@@ -27,12 +30,17 @@ namespace The5
 
 		///Asset Loading
 		/** import a mesh and save it as Banshee .asset if it does not exist yet**/
-		static bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale = 1.0f);
+		static bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale = 1.0f, bool forceInport = false);
 		/** import a texture and save it as Banshee .asset if it does not exist yet**/
-		static bs::HTexture loadTexture(const bs::Path& originalFilePath, bool isSRGB = false, bool isCubemap = false, bool isHDR = false);
+		static bs::HTexture loadTexture(const bs::Path& originalFilePath, bool isSRGB = false, bool isCubemap = false, bool isHDR = false, bool forceInport = false);
+		
+		///Default Assets
 		/** get default shader */
 		static bs::HMaterial& getDefaultPBRMaterial();
-
+		/** Cube */
+		static bs::HMesh& getDefaultCube();
+		/** Sphere */
+		static bs::HMesh& getDefaultSphere();
 
 	protected:
 		///private Fields
@@ -47,8 +55,6 @@ namespace The5
 		/** GUI Widget */
 		bs::HGUIWidget  mGUI_Widget;
 
-
-
 		///bs::Application overrides
 		void onStartUp() override;
 		void onShutDown() override;
@@ -58,12 +64,15 @@ namespace The5
 		///Setup
 		/** loads default assets */
 		void initDefaultAssets();
+		/** set default key bindings */
+		void initDefaultKeyBindings();
+		/** configures the Renderer */
+		void initRenderer();
 		/** create the main camera SO and Component and attach further components */
 		void initMainCamera();
 		/** create the GUI camera SO and Component and attach further components */
 		void initGUI();
-		/** set default key bindings */
-		void initDefaultKeyBindings();
+
 
 		///Callbacks
 	    /** method registering all the Callbacks at their corresponding Events*/
@@ -74,11 +83,12 @@ namespace The5
 		///Default Assets
 		bs::HShader defaultPBRShader;
 		bs::HMaterial defaultPBRMaterial;
-
 		bs::HTexture defaultTexture_Albedo;
 		bs::HTexture defaultTexture_Normals;
 		bs::HTexture defaultTexture_Roughness;
 		bs::HTexture defaultTexture_Metalness;
+		bs::HMesh defaultSphere;
+		bs::HMesh defaultCube;
 
 	};
 

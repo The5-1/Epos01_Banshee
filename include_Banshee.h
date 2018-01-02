@@ -3,10 +3,28 @@
 #include "BsApplication.h"
 #include "CoreThread/BsCoreThread.h"
 
-#include "Scene/BsSceneObject.h"
-
 #include "Resources/BsResources.h"
 #include "Resources/BsBuiltinResources.h"
+
+#include "Scene/BsSceneObject.h"
+#include "Scene/BsSceneManager.h"
+
+#include "Renderer/BsRenderer.h"
+#include "Renderer/BsRenderSettings.h"
+#include "Renderer/BsRendererUtility.h"
+
+#include "RenderAPI/BsRenderAPI.h"
+#include "RenderAPI/BsRenderWindow.h"
+#include "RenderAPI/BsCommandBuffer.h"
+#include "RenderAPI/BsGpuProgram.h"
+#include "RenderAPI/BsGpuPipelineState.h"
+#include "RenderAPI/BsBlendState.h"
+#include "RenderAPI/BsDepthStencilState.h"
+#include "RenderAPI/BsGpuParamBlockBuffer.h"
+#include "RenderAPI/BsIndexBuffer.h"
+#include "RenderAPI/BsVertexDataDesc.h"
+
+#include "Math/BsQuaternion.h"
 
 #include "Mesh/BsMesh.h"
 #include "Mesh/BsMeshBase.h"
@@ -37,23 +55,11 @@
 #include "GUI/BsGUIListBox.h"
 #include "GUI/BsProfilerOverlay.h"
 
-#include "RenderAPI/BsRenderAPI.h"
-#include "RenderAPI/BsRenderWindow.h"
-#include "RenderAPI/BsCommandBuffer.h"
-#include "RenderAPI/BsGpuProgram.h"
-#include "RenderAPI/BsGpuPipelineState.h"
-#include "RenderAPI/BsBlendState.h"
-#include "RenderAPI/BsDepthStencilState.h"
-#include "RenderAPI/BsGpuParamBlockBuffer.h"
-#include "RenderAPI/BsIndexBuffer.h"
-#include "RenderAPI/BsVertexDataDesc.h"
-
-#include "Math/BsQuaternion.h"
-
 #include "Utility/BsTime.h"
 #include "Utility/BsTimer.h"
 #include "Utility/BsDrawHelper.h"
 
-#include "Renderer/BsRendererUtility.h"
+#include "Physics/BsPhysicsCommon.h"
+#include "Physics/BsCharacterController.h"
 
 #include "BsEngineConfig.h"

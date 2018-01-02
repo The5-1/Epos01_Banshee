@@ -61,6 +61,8 @@ namespace The5
 		Application::onStartUp(); //init banshee first!
 		gDebug().logDebug("Banshee Engine started.");
 
+		//CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
+
 		initDefaultKeyBindings();
 
 		initDefaultAssets();
@@ -89,12 +91,44 @@ namespace The5
 		
 	}
 
+//------------------------------------- Renderer --------------------------------------
+	void The5Application::initRenderer()
+	{
+		
+	}
+
+
 //-------------------------------------- Camera ---------------------------------------
 
 	void The5Application::initMainCamera()
 	{
 		this->mMainCameraSO = SceneObject::create("Main Camera");
 		this->mMainCameraC = mMainCameraSO->addComponent<CCamera>();
+		mMainCameraC->setMain(true);
+
+		///Render settings
+		SPtr<RenderSettings> settings = mMainCameraC->getRenderSettings();
+		settings->enableLighting = true;
+		settings->enableIndirectLighting = false; //without this everything is black if you dont place lights manually
+		settings->enableShadows = true;
+		settings->enableAutoExposure = false;
+		settings->enableFXAA = false;
+		settings->enableHDR = false;
+		settings->enableTonemapping = false;
+		ScreenSpaceReflectionsSettings ssr_settings;
+		ssr_settings.enabled = false;
+		settings->screenSpaceReflections = ssr_settings;
+		AmbientOcclusionSettings ao_settings;
+		ao_settings.enabled = false;
+		settings->ambientOcclusion = ao_settings;
+		ColorGradingSettings color_settings;
+		color_settings.saturation = 0.0f;
+		color_settings.contrast = 0.0f;
+		color_settings.gain = 0.0f;
+		color_settings.offset = 0.0f;
+		settings->colorGrading = color_settings;
+
+
 
 		mMainCameraSO->setPosition(Vector3(8.0, 1.0f, 0.0f));
 		mMainCameraSO->lookAt(Vector3(0.0, 3.0, 0.0));
@@ -163,6 +197,7 @@ namespace The5
 		bottomLayout->addElement(GUILabel::create(HString(L"Press F2 to toggle GPU profiler overlay")));
 
 		HProfilerOverlay profilerOverlay = mGUI_SO->addComponent<CProfilerOverlay>(mGUI_CameraC->_getCamera());
+		profilerOverlay->show(ProfilerOverlayType::GPUSamples);
 
 		//bottomLayout->addElement(GUIButton::create(HString(L"Click me!")));
 		//bottomLayout->addElement<GUIButton>(HString(L"Click me too!"));
@@ -251,19 +286,23 @@ namespace The5
 		defaultPBRMaterial->setTexture("gRoughnessTex", defaultTexture_Roughness);
 		defaultPBRMaterial->setTexture("gMetalnessTex", defaultTexture_Metalness);
 
+
+		defaultCube = The5Application::loadMesh(MESH_CUBE.c_str());
+		defaultSphere = The5Application::loadMesh(MESH_SPHERE.c_str());
+
 		gDebug().logDebug("Done loading Default Assets.");
 	}
 	
-	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale)
+	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale, bool forceInport)
 	{
-		const bool debugPrint = false;
+		const bool debugPrint = _showImportDebug;
 		Path assetPath = originalFilePath;
 		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
 
 		//Try loading existing exported Asset
 		if(debugPrint) Debug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 		HMesh model = gResources().load<Mesh>(assetPath);
-		if (model == nullptr) // If Mesh file doesn't exist, import from the source file.
+		if (model == nullptr || forceInport == true || _forceRebuildAssetOnInport == true) // If Mesh file doesn't exist, import from the source file.
 		{
 			if(debugPrint) gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
 			// When importing you may specify optional import options that control how is the asset imported.
@@ -292,15 +331,15 @@ namespace The5
 		return model;
 	}
 
-	bs::HTexture The5Application::loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR)
+	bs::HTexture The5Application::loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR, bool forceInport)
 	{
-		const bool debugPrint = false;
+		const bool debugPrint = _showImportDebug;
 		Path assetPath = originalFilePath;
 		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
 
 		if (debugPrint) gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 		HTexture texture = gResources().load<Texture>(assetPath);
-		if (texture == nullptr) // Texture file doesn't exist, import from the source file.
+		if (texture == nullptr || forceInport == true || _forceRebuildAssetOnInport == true) // Texture file doesn't exist, import from the source file.
 		{
 			if (debugPrint) gDebug().logDebug("Existing .asset not found, importing texture from " + bs::toString(originalFilePath.toPlatformString()));
 			// When importing you may specify optional import options that control how is the asset imported.
@@ -350,6 +389,16 @@ namespace The5
 	bs::HMaterial& The5Application::getDefaultPBRMaterial()
 	{
 		return The5Application::get().defaultPBRMaterial;
+	}
+
+	bs::HMesh & The5Application::getDefaultCube()
+	{
+		return The5Application::get().defaultCube;
+	}
+
+	bs::HMesh & The5Application::getDefaultSphere()
+	{
+		return The5Application::get().defaultSphere;
 	}
 
 }

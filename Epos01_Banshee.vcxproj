@@ -278,13 +278,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BansheeHelper.cpp" />
+    <ClCompile Include="CameraFlyer.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshFactory.cpp" />
     <ClCompile Include="The5Application.cpp" />
     <ClInclude Include="BansheeHelper.h" />
-    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h" />
-    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp" />
+    <ClInclude Include="CameraFlyer.h" />
     <ClInclude Include="ForwardDeclarations.h" />
     <ClInclude Include="include_Banshee.h" />
     <ClInclude Include="include_STL.h" />

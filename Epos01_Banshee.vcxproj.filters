@@ -5,9 +5,6 @@
     <ClCompile Include="BansheeHelper.cpp">
       <Filter>Source Files\Banshee</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Logging.cpp">
       <Filter>Source Files\Helper</Filter>
     </ClCompile>
@@ -17,13 +14,13 @@
     <ClCompile Include="MeshFactory.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="CameraFlyer.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BansheeHelper.h">
       <Filter>Source Files\Banshee</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Dev\BansheeEngine\Source\Examples\ExampleGettingStarted\CameraFlyer.h">
-      <Filter>Source Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Logging.h">
       <Filter>Source Files\Helper</Filter>
@@ -45,6 +42,9 @@
     </ClInclude>
     <ClInclude Include="MeshFactory.h">
       <Filter>Source Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFlyer.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

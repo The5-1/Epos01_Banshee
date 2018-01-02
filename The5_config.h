@@ -28,4 +28,7 @@ namespace The5
 	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "sofa_smoothness.png";
 	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "sofa_metalness.png";
 
+	const std::string MESH_CUBE = GLOBAL_MESH_PATH + "Cube.FBX";
+	const std::string MESH_SPHERE = GLOBAL_MESH_PATH + "Sphere.FBX";
+
 }
