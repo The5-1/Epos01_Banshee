@@ -24,10 +24,16 @@ namespace The5
 	
 	const std::string TEX_SKYBOX = GLOBAL_TEXTURE_PATH + "Environment/PaperMill_E_3k.hdr";
 
-	const std::string TEX_ALBEDO = GLOBAL_TEXTURE_PATH + "sofa_albedo.png";
-	const std::string TEX_NORMAL = GLOBAL_TEXTURE_PATH + "sofa_normal.png";
-	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "sofa_roughness.png";
-	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "sofa_metalness.png";
+
+	const std::string TEX_ALBEDO = GLOBAL_TEXTURE_PATH + "Gray50.png";
+	const std::string TEX_NORMAL = GLOBAL_TEXTURE_PATH + "Normal.png";
+	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "Gray10.png";
+	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "Gray90.png";
+
+	const std::string TEX_SOFA_ALBEDO = GLOBAL_TEXTURE_PATH + "sofa_albedo.png";
+	const std::string TEX_SOFA_NORMAL = GLOBAL_TEXTURE_PATH + "sofa_normal.png";
+	const std::string TEX_SOFA_ROUGHNESS = GLOBAL_TEXTURE_PATH + "sofa_roughness.png";
+	const std::string TEX_SOFA_METALNESS = GLOBAL_TEXTURE_PATH + "sofa_metalness.png";
 
 	const std::string MESH_CUBE = GLOBAL_MESH_PATH + "Cube.obj";
 	const std::string MESH_SPHERE = GLOBAL_MESH_PATH + "Sphere.obj";

@@ -37,7 +37,7 @@ namespace The5
 		The5_ApplicationDesc.primaryWindowDesc.videoMode = bs::VideoMode(1280,720);
 		The5_ApplicationDesc.primaryWindowDesc.title = "Epos";
 		//The5_ApplicationDesc.primaryWindowDesc.vsync = true; //true is default, setting it to true again crashes
-		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 2;
+		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 1;
 		The5_ApplicationDesc.primaryWindowDesc.fullscreen = false;
 		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = false; //deferred quad needs no depth in the on-screen buffer
 		The5_ApplicationDesc.primaryWindowDesc.allowResize = true;
@@ -139,9 +139,9 @@ namespace The5
 		mMainCameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
 
 		/// Set up camera component properties
-		//mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(0.05f);
-		mMainCameraC->setFarClipDistance(200.0f);
+		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
+		mMainCameraC->setNearClipDistance(10.1f);
+		mMainCameraC->setFarClipDistance(200.0);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!
 
@@ -275,7 +275,7 @@ namespace The5
 
 //--------------------------------- static access points ------------------------------
 
-	The5Application& The5Application::get()
+	The5Application& The5Application::getThe5Application()
 	{
 		//I need to get the instance by pointer, since I can't cast a object! Then dereference with *
 		return *static_cast<The5Application*>(Application::instancePtr());
@@ -283,7 +283,7 @@ namespace The5
 
 	bs::HCamera& The5Application::mainCamera()
 	{
-		return The5Application::get().mMainCameraC;
+		return The5Application::getThe5Application().mMainCameraC;
 	}
 
 }

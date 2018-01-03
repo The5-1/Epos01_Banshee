@@ -34,10 +34,6 @@ namespace bs
 		// Set a name for the component, so we can find it later if needed
 		setName("CameraFlyer");
 
-		// Find the camera component we're influencing (must be on the same SceneObject we're on)
-		mCamera = sceneObject()->getComponent<CCamera>();
-		mCamera->setNearClipDistance(5);
-
 		// Get handles for key bindings. Actual keys attached to these bindings will be registered during app start-up.
 		mMoveForward = VirtualButton("Forward");
 		mMoveBack = VirtualButton("Back");

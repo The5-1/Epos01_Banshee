@@ -50,7 +50,7 @@ int main()
 	HCamera sceneCamera = sceneCameraSO->addComponent<CCamera>();
 	sceneCamera->getViewport()->setTarget(window);
 	sceneCamera->setPriority(1);
-	sceneCamera->setNearClipDistance(5);
+	sceneCamera->setNearClipDistance(0.005f);
 	sceneCamera->setFarClipDistance(10000);
 	sceneCamera->setAspectRatio(1280 / (float)720);
 	sceneCameraSO->addComponent<CameraFlyer>();
@@ -77,22 +77,71 @@ int main()
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
 
-	//HMesh sponzaMesh = The5Application::loadMesh(MESH_SPONZA.c_str(), 1.0f);
-	//HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str());
+	
+	HSceneObject groundSO = SceneObject::create("Ground");
+	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*10000.0);
+	HRenderable groundSO_CRenderable = groundSO->addComponent<CRenderable>();
+	groundSO_CRenderable->setMesh(DefaultAssets::defaultPlane);
+	groundSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
+	
 
+	
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
 	sponzaSO_CRenderable->setMesh(DefaultAssets::defaultSponza);
 	sponzaSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
-
-	HSceneObject testSO = SceneObject::create("Cube");
+	
+	//The5Application::getThe5Application().mainCamera()->setNearClipDistance(0.0001f);
+	
+	std::cout << "Camera Name: " << The5Application::getThe5Application().mainCamera()->getName() << std::endl;
+	std::cout << "near: " << The5Application::getThe5Application().mainCamera()->getNearClipDistance() << std::endl;
+	std::cout << "far: " << The5Application::getThe5Application().mainCamera()->getFarClipDistance() << std::endl;
+	std::cout << "priority: " << The5Application::getThe5Application().mainCamera()->getPriority() << std::endl;
+	/*
+	HSceneObject testSO = SceneObject::create("Sphere");
 	HRenderable testSO_CRenderable = testSO->addComponent<CRenderable>();
-	testSO->setScale(Vector3(100.0, 100.0, 100.0));
-	testSO_CRenderable->setMesh(DefaultAssets::defaultCube);
+	testSO->setScale(Vector3(1000.0, 1000.0, 1000.0));
+	testSO_CRenderable->setMesh(DefaultAssets::defaultSphere);
 	testSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	gDebug().logDebug(toString(testSO_CRenderable->getMesh()->getProperties().getNumVertices()));
+	*/
 
-	
+	/*
+	for (int x = -10; x < 10; x++)
+	{
+		for (int y = -10; y < 10; y++)
+		{
+			for (int z = -10; x < 10; z++)
+			{
+				std::string name = "Grid";
+				HSceneObject spam = SceneObject::create(name.c_str());
+				spam->move(Vector3(x*1.0f, y*1.0f, z*1.0f));
+				spam->setScale(Vector3(200.0, 200.0, 200.0));
+				HRenderable spamR = spam->addComponent<CRenderable>();
+				spamR->setMesh(DefaultAssets::defaultCube);
+				spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
+			}
+		}
+	}
+	*/
+
+	/*
+	for (int i = 0; i < 100; i++)
+	{
+		float r1 = (float)(rand()%100-50)*0.01;
+		float r2 = (float)(rand()%100-50)*0.01;
+		float r3 = (float)(rand()%100-50)*0.01;
+		float r4 = (float)(rand()%100)*0.01;
+		//std::cout << r1 << "," << r2 << "," << r3 << std::endl;
+		std::string name = "Sphere_" + i;
+		HSceneObject spam = SceneObject::create(name.c_str());
+		spam->move(Vector3(r1, r2, r3));
+		spam->setScale(Vector3(200.0, 200.0, 200.0)*(r1+r3)/(r2+r3));
+		HRenderable spamR = spam->addComponent<CRenderable>();
+		spamR->setMesh(DefaultAssets::defaultSphere);
+		spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
+	}
+	*/
 
 	gDebug().logDebug("Starting Main Loop.");
 	Application::instance().runMainLoop();

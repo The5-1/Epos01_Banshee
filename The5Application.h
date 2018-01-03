@@ -23,7 +23,7 @@ namespace The5
 
 		///static Access Points
 		/** get the The5Application object */
-		static The5Application& get();
+		static The5Application& getThe5Application();
 		/** get the mainCamera Component */
 		static bs::HCamera& mainCamera();
 
