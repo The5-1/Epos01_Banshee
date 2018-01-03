@@ -5,6 +5,7 @@
 
 #include "Resources/BsResources.h"
 #include "Resources/BsBuiltinResources.h"
+#include "Resources/BsBuiltinResourcesHelper.h"
 
 #include "Scene/BsSceneObject.h"
 #include "Scene/BsSceneManager.h"
@@ -12,6 +13,8 @@
 #include "Renderer/BsRenderer.h"
 #include "Renderer/BsRenderSettings.h"
 #include "Renderer/BsRendererUtility.h"
+#include "Renderer/BsRendererManager.h"
+#include "Renderer/BsRendererFactory.h"
 
 #include "RenderAPI/BsRenderAPI.h"
 #include "RenderAPI/BsRenderWindow.h"

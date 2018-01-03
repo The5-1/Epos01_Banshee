@@ -2,14 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="BansheeHelper.cpp">
-      <Filter>Source Files\Banshee</Filter>
-    </ClCompile>
     <ClCompile Include="Logging.cpp">
       <Filter>Source Files\Helper</Filter>
     </ClCompile>
     <ClCompile Include="The5Application.cpp">
-      <Filter>Source Files\Banshee</Filter>
+      <Filter>Source Files\The5Banshee</Filter>
     </ClCompile>
     <ClCompile Include="MeshFactory.cpp">
       <Filter>Source Files\Mesh</Filter>
@@ -17,11 +14,14 @@
     <ClCompile Include="CameraFlyer.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="The5DefaultAssets.cpp">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClCompile>
+    <ClCompile Include="The5Utility.cpp">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BansheeHelper.h">
-      <Filter>Source Files\Banshee</Filter>
-    </ClInclude>
     <ClInclude Include="Logging.h">
       <Filter>Source Files\Helper</Filter>
     </ClInclude>
@@ -35,16 +35,22 @@
       <Filter>Source Files\Includes</Filter>
     </ClInclude>
     <ClInclude Include="The5Application.h">
-      <Filter>Source Files\Banshee</Filter>
-    </ClInclude>
-    <ClInclude Include="The5_config.h">
-      <Filter>Source Files\Helper</Filter>
+      <Filter>Source Files\The5Banshee</Filter>
     </ClInclude>
     <ClInclude Include="MeshFactory.h">
       <Filter>Source Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="CameraFlyer.h">
       <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="The5DefaultAssets.h">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="The5Utility.h">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="The5Config.h">
+      <Filter>Source Files\The5Banshee</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +59,6 @@
     </Filter>
     <Filter Include="CMake">
       <UniqueIdentifier>{8bc6cabb-0a86-407b-a43f-72f02c9d4dae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Banshee">
-      <UniqueIdentifier>{4295d8a4-8a02-48e8-9fde-e065b40e4e28}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{1d4271a6-96f3-4b3e-86c4-39eda1c5cfbd}</UniqueIdentifier>
@@ -68,6 +71,9 @@
     </Filter>
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{fc3c2efe-fc0d-46e0-840b-def97d9775a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\The5Banshee">
+      <UniqueIdentifier>{4295d8a4-8a02-48e8-9fde-e065b40e4e28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -19,8 +19,6 @@ namespace The5
 		/** constructor */
 		The5Application(const bs::START_UP_DESC& desc);
 
-
-
 		/** generate a default startupDesc */
 		static bs::START_UP_DESC defaultStartupDesc();
 
@@ -31,6 +29,8 @@ namespace The5
 		///start
 		//** shortcut that calls Application::startUp<The5Application>(The5Application::defaultStartupDesc()); */
 		static void start();
+
+		void initUtilityOnly();
 
 		///static Access Points
 		/** get the The5Application object */
@@ -51,6 +51,8 @@ namespace The5
 		static bs::HMesh& getDefaultCube();
 		/** Sphere */
 		static bs::HMesh& getDefaultSphere();
+		/** Palane */
+		bs::HMesh & getDefaultPlane();
 
 	protected:
 		///private Fields
@@ -103,8 +105,9 @@ namespace The5
 		bs::HTexture defaultTexture_Normals;
 		bs::HTexture defaultTexture_Roughness;
 		bs::HTexture defaultTexture_Metalness;
-		bs::HMesh defaultSphere;
 		bs::HMesh defaultCube;
+		bs::HMesh defaultSphere;
+		bs::HMesh defaultPlane;
 
 	};
 

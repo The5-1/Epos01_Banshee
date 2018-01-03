@@ -1,7 +1,7 @@
 #include "The5Application.h"
 
 #include "include_STL.h"
-#include "The5_config.h"
+#include "The5Config.h"
 #include "Logging.h"
 
 #include "CameraFlyer.h"
@@ -30,8 +30,8 @@ namespace The5
 		// Descriptor used for initializing the primary application window.
 		The5_ApplicationDesc.primaryWindowDesc.videoMode = bs::VideoMode(1280,720);
 		The5_ApplicationDesc.primaryWindowDesc.title = "Epos";
-		//The5_ApplicationDesc.primaryWindowDesc.vsync = false; //true is default, setting it to true again crashes
-		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 1;
+		//The5_ApplicationDesc.primaryWindowDesc.vsync = true; //true is default, setting it to true again crashes
+		The5_ApplicationDesc.primaryWindowDesc.vsyncInterval = 2;
 		The5_ApplicationDesc.primaryWindowDesc.fullscreen = false;
 		The5_ApplicationDesc.primaryWindowDesc.depthBuffer = false; //deferred quad needs no depth in the on-screen buffer
 		The5_ApplicationDesc.primaryWindowDesc.allowResize = true;
@@ -50,7 +50,7 @@ namespace The5
 		SPtr<RenderSettings> settings = bs_shared_ptr_new<RenderSettings>();
 		settings->enableLighting = true;
 		settings->enableIndirectLighting = false; //without this everything is black if you dont place lights manually
-		settings->enableShadows = true;
+		settings->enableShadows = false;
 		settings->enableAutoExposure = false;
 		settings->enableFXAA = false;
 		settings->enableHDR = false;
@@ -74,6 +74,19 @@ namespace The5
 	void The5Application::start()
 	{
 		Application::startUp<The5Application>(The5Application::defaultStartupDesc());
+	}
+
+	void The5Application::initUtilityOnly()
+	{
+		initDefaultKeyBindings();
+
+		initDefaultAssets();
+
+		initMainCamera();
+
+		initGUI();
+
+		initCallbacks();
 	}
 
 	void The5Application::onStartUp()
@@ -116,7 +129,6 @@ namespace The5
 		
 	}
 
-
 //-------------------------------------- Camera ---------------------------------------
 
 	void The5Application::initMainCamera()
@@ -135,9 +147,9 @@ namespace The5
 		mMainCameraC->getViewport()->setTarget(window);	// Set the camera to draw to the main window
 
 		/// Set up camera component properties
-		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(0.005f);
-		mMainCameraC->setFarClipDistance(1000.0f);
+		//mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
+		mMainCameraC->setNearClipDistance(9.9f);
+		mMainCameraC->setFarClipDistance(10.0f);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!
 
@@ -322,9 +334,9 @@ namespace The5
 		defaultPBRMaterial->setTexture("gRoughnessTex", defaultTexture_Roughness);
 		defaultPBRMaterial->setTexture("gMetalnessTex", defaultTexture_Metalness);
 
-
 		defaultCube = The5Application::loadMesh(MESH_CUBE.c_str());
 		defaultSphere = The5Application::loadMesh(MESH_SPHERE.c_str());
+		defaultPlane = The5Application::loadMesh(MESH_PLANE.c_str());
 
 		gDebug().logDebug("Done loading Default Assets.");
 	}
@@ -435,6 +447,11 @@ namespace The5
 	bs::HMesh & The5Application::getDefaultSphere()
 	{
 		return The5Application::get().defaultSphere;
+	}
+
+	bs::HMesh & The5Application::getDefaultPlane()
+	{
+		return The5Application::get().defaultPlane;
 	}
 
 }

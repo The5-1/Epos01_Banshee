@@ -7,9 +7,11 @@
 #endif
 
 ///The5 includes
-#include "The5_config.h"
+#include "The5Config.h"
 #include "Logging.h"
 #include "The5Application.h"
+#include "The5Utility.h"
+#include "The5DefaultAssets.h"
 //#include "BansheeHelper.h"
 
 ///Components
@@ -33,8 +35,16 @@ int main()
 
 	The5::enableConsole();
 
+#define USE_THE5_APPLICATION
+#ifdef USE_THE5_APPLICATION
 	The5Application::start();
-	//Application::startUp(VideoMode(1280,720), "Epos", false);
+	The5::DefaultAssets::init();
+#else
+	Application::startUp(VideoMode(1280,720), "Epos", false);
+	The5::DefaultAssets::init();
+	//The5Application* the5app = new The5Application(The5Application::defaultStartupDesc());
+	//the5app->initUtilityOnly();
+#endif
 
 	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
@@ -51,28 +61,31 @@ int main()
 
 	HSceneObject skyboxSO = SceneObject::create("Skybox");
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
-	skyboxC->setTexture(The5Application::loadTexture(SKYBOX.c_str(), false, true, true));
+	//skyboxC->setTexture(The5Application::loadTexture(TEX_SKYBOX.c_str(), false, true, true));
+	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
 
-	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
-	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str());
+	//HMesh sponzaMesh = The5Application::loadMesh(MESH_SPONZA.c_str(), 1.0f);
+	//HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str());
 
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
-	sponzaSO_CRenderable->setMesh(sponzaMesh);
-	sponzaSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
+	sponzaSO_CRenderable->setMesh(DefaultAssets::defaultSponza);
+	sponzaSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 
-	HSceneObject testSO = SceneObject::create("Test");
+	HSceneObject testSO = SceneObject::create("Cube");
 	HRenderable testSO_CRenderable = testSO->addComponent<CRenderable>();
-	testSO_CRenderable->setMesh(The5Application::getDefaultCube());
-	testSO_CRenderable->setMaterial(The5Application::getDefaultPBRMaterial());
+	testSO->setScale(Vector3(100.0, 100.0, 100.0));
+	testSO_CRenderable->setMesh(DefaultAssets::defaultCube);
+	testSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
+	gDebug().logDebug(toString(testSO_CRenderable->getMesh()->getProperties().getNumVertices()));
+
+	
 
 	gDebug().logDebug("Starting Main Loop.");
 	Application::instance().runMainLoop();
 
 	Application::shutDown();
-
-
 
 	//testSO->setScale(Vector3(0.2,0.2,0.2));
 
@@ -103,7 +116,7 @@ int main()
 	//Application::startUp(VideoMode(1280, 720),"My app",false);
 
 	gDebug().logDebug("Loading Assets.");
-	HMesh sponzaMesh = The5Application::loadMesh(SPONZA_FBX.c_str(), 1.0f);
+	HMesh sponzaMesh = The5Application::loadMesh(MESH_SPONZA.c_str(), 1.0f);
 	HTexture uvCheckerTexture = The5Application::loadTexture(TEX_UVCHECKER.c_str(), 1.0f);
 
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
