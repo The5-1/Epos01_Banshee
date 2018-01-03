@@ -1,7 +1,13 @@
 #include "The5Application.h"
 
 #include "include_STL.h"
+
 #include "The5Config.h"
+
+#include "The5Utility.h"
+#include "The5DefaultAssets.h"
+#include "The5InputConfig.h"
+
 #include "Logging.h"
 
 #include "CameraFlyer.h"
@@ -76,28 +82,14 @@ namespace The5
 		Application::startUp<The5Application>(The5Application::defaultStartupDesc());
 	}
 
-	void The5Application::initUtilityOnly()
-	{
-		initDefaultKeyBindings();
-
-		initDefaultAssets();
-
-		initMainCamera();
-
-		initGUI();
-
-		initCallbacks();
-	}
-
 	void The5Application::onStartUp()
 	{
 		gDebug().logDebug("Starting Banshee Engine...");
 		Application::onStartUp(); //init banshee first!
 		gDebug().logDebug("Banshee Engine started.");
 
-		initDefaultKeyBindings();
-
-		initDefaultAssets();
+		The5::DefaultAssets::init();
+		The5::InputConfig::initDefaultKeyBindings();
 
 		initMainCamera();
 
@@ -148,8 +140,8 @@ namespace The5
 
 		/// Set up camera component properties
 		//mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(9.9f);
-		mMainCameraC->setFarClipDistance(10.0f);
+		mMainCameraC->setNearClipDistance(0.05f);
+		mMainCameraC->setFarClipDistance(200.0f);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!
 
@@ -255,28 +247,6 @@ namespace The5
 
 //-------------------------------------- Input ----------------------------------------
 
-	void The5Application::initDefaultKeyBindings()
-	{
-		auto inputConfig = VirtualInput::instance().getConfiguration();
-
-		// 0 or 1
-		inputConfig->registerButton("Forward", BC_W);
-		inputConfig->registerButton("Back", BC_S);
-		inputConfig->registerButton("Left", BC_A);
-		inputConfig->registerButton("Right", BC_D);
-		inputConfig->registerButton("Forward", BC_UP);
-		inputConfig->registerButton("Back", BC_DOWN);
-		inputConfig->registerButton("Left", BC_LEFT);
-		inputConfig->registerButton("Right", BC_RIGHT);
-		inputConfig->registerButton("Shift", BC_LSHIFT);
-		inputConfig->registerButton("RMB", BC_MOUSE_RIGHT);
-
-		//[-1.0, 1.0]
-		inputConfig->registerAxis("Horizontal", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseX));
-		inputConfig->registerAxis("Vertical", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseY));
-
-	}
-
 //------------------------------------- Callbacks -------------------------------------
 
 	void The5Application::initCallbacks()
@@ -314,144 +284,6 @@ namespace The5
 	bs::HCamera& The5Application::mainCamera()
 	{
 		return The5Application::get().mMainCameraC;
-	}
-
-//-------------------------------------- Assets -------------------------------------
-	
-	void The5Application::initDefaultAssets()
-	{
-		gDebug().logDebug("Loading Default Assets...");
-		defaultPBRShader = BuiltinResources::instance().getBuiltinShader(BuiltinShader::Standard);
-		defaultPBRMaterial = Material::create(defaultPBRShader);
-
-		HTexture defaultTexture_Albedo = loadTexture(TEX_ALBEDO.c_str());
-		HTexture defaultTexture_Normals = loadTexture(TEX_NORMAL.c_str());
-		HTexture defaultTexture_Roughness = loadTexture(TEX_ROUGHNESS.c_str());
-		HTexture defaultTexture_Metalness = loadTexture(TEX_METALNESS.c_str());
-
-		defaultPBRMaterial->setTexture("gAlbedoTex", defaultTexture_Albedo);
-		defaultPBRMaterial->setTexture("gNormalTex", defaultTexture_Normals);
-		defaultPBRMaterial->setTexture("gRoughnessTex", defaultTexture_Roughness);
-		defaultPBRMaterial->setTexture("gMetalnessTex", defaultTexture_Metalness);
-
-		defaultCube = The5Application::loadMesh(MESH_CUBE.c_str());
-		defaultSphere = The5Application::loadMesh(MESH_SPHERE.c_str());
-		defaultPlane = The5Application::loadMesh(MESH_PLANE.c_str());
-
-		gDebug().logDebug("Done loading Default Assets.");
-	}
-	
-	bs::HMesh The5Application::loadMesh(const bs::Path& originalFilePath, float scale, bool forceInport)
-	{
-		const bool debugPrint = _showImportDebug;
-		Path assetPath = originalFilePath;
-		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
-
-		//Try loading existing exported Asset
-		if(debugPrint) Debug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
-		HMesh model = gResources().load<Mesh>(assetPath);
-		if (model == nullptr || forceInport == true || _forceRebuildAssetOnInport == true) // If Mesh file doesn't exist, import from the source file.
-		{
-			if(debugPrint) gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
-			// When importing you may specify optional import options that control how is the asset imported.
-			SPtr<ImportOptions> meshImportOptions = Importer::instance().createImportOptions(originalFilePath);
-
-			// rtti_is_of_type checks if the import options are of valid type, in case the provided path is pointing to a
-			// non-mesh resource. This is similar to dynamic_cast but uses Banshee internal RTTI system for type checking.
-			if (rtti_is_of_type<MeshImportOptions>(meshImportOptions))
-			{
-				MeshImportOptions* importOptions = static_cast<MeshImportOptions*>(meshImportOptions.get());
-
-				importOptions->setImportScale(scale);
-			}
-
-			model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
-
-			// Save for later use, so we don't have to import on the next run.
-			if(debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
-			gResources().save(model, assetPath, true);
-		}
-		else
-		{
-			if(debugPrint) gDebug().logDebug("Existing .asset loaded.");
-		}
-
-		return model;
-	}
-
-	bs::HTexture The5Application::loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR, bool forceInport)
-	{
-		const bool debugPrint = _showImportDebug;
-		Path assetPath = originalFilePath;
-		assetPath.setExtension(originalFilePath.getExtension() + ".asset");
-
-		if (debugPrint) gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
-		HTexture texture = gResources().load<Texture>(assetPath);
-		if (texture == nullptr || forceInport == true || _forceRebuildAssetOnInport == true) // Texture file doesn't exist, import from the source file.
-		{
-			if (debugPrint) gDebug().logDebug("Existing .asset not found, importing texture from " + bs::toString(originalFilePath.toPlatformString()));
-			// When importing you may specify optional import options that control how is the asset imported.
-			SPtr<ImportOptions> textureImportOptions = Importer::instance().createImportOptions(originalFilePath);
-
-			// rtti_is_of_type checks if the import options are of valid type, in case the provided path is pointing to a 
-			// non-texture resource. This is similar to dynamic_cast but uses Banshee internal RTTI system for type checking.
-			if (rtti_is_of_type<TextureImportOptions>(textureImportOptions))
-			{
-				TextureImportOptions* importOptions = static_cast<TextureImportOptions*>(textureImportOptions.get());
-
-				// We want maximum number of mipmaps to be generated
-				importOptions->setGenerateMipmaps(true);
-
-				// If the texture is in sRGB space the system needs to know about it
-				importOptions->setSRGB(isSRGB);
-
-				// Ensures we can save the texture contents
-				importOptions->setCPUCached(true);
-
-				// Import as cubemap if needed
-				importOptions->setIsCubemap(isCubemap);
-
-				// If importing as cubemap, assume source is a panorama
-				importOptions->setCubemapSourceType(CubemapSourceType::Cylindrical);
-
-				// Importing using a HDR format if requested
-				if (isHDR) importOptions->setFormat(PF_RG11B10F);
-
-			}
-
-			// Import texture with specified import options
-			texture = gImporter().import<Texture>(originalFilePath, textureImportOptions);
-
-			// Save for later use, so we don't have to import on the next run.
-			if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
-			gResources().save(texture, assetPath, true);
-		}
-		else
-		{
-			if (debugPrint) gDebug().logDebug("Existing .asset loaded.");
-		}
-
-		return texture;
-	}
-
-	bs::HMaterial& The5Application::getDefaultPBRMaterial()
-	{
-		return The5Application::get().defaultPBRMaterial;
-	}
-
-	bs::HMesh & The5Application::getDefaultCube()
-	{
-		return The5Application::get().defaultCube;
-	}
-
-	bs::HMesh & The5Application::getDefaultSphere()
-	{
-		return The5Application::get().defaultSphere;
-	}
-
-	bs::HMesh & The5Application::getDefaultPlane()
-	{
-		return The5Application::get().defaultPlane;
 	}
 
 }

@@ -20,6 +20,9 @@
     <ClCompile Include="The5Utility.cpp">
       <Filter>Source Files\The5Banshee</Filter>
     </ClCompile>
+    <ClCompile Include="The5InputConfig.cpp">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logging.h">
@@ -50,6 +53,9 @@
       <Filter>Source Files\The5Banshee</Filter>
     </ClInclude>
     <ClInclude Include="The5Config.h">
+      <Filter>Source Files\The5Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="The5InputConfig.h">
       <Filter>Source Files\The5Banshee</Filter>
     </ClInclude>
   </ItemGroup>

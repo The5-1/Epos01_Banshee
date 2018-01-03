@@ -283,6 +283,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="MeshFactory.cpp" />
     <ClCompile Include="The5Application.cpp" />
     <ClCompile Include="The5DefaultAssets.cpp" />
+    <ClCompile Include="The5InputConfig.cpp" />
     <ClCompile Include="The5Utility.cpp" />
     <ClInclude Include="CameraFlyer.h" />
     <ClInclude Include="ForwardDeclarations.h" />
@@ -292,6 +293,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="MeshFactory.h" />
     <ClInclude Include="The5Application.h" />
     <ClInclude Include="The5DefaultAssets.h" />
+    <ClInclude Include="The5InputConfig.h" />
     <ClInclude Include="The5Utility.h" />
     <ClInclude Include="The5Config.h" />
   </ItemGroup>

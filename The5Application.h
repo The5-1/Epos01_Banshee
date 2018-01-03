@@ -10,49 +10,22 @@ namespace The5
 	class The5Application : public bs::Application
 	{
 	public:
-		///Global Settins
-		static const bool _forceRebuildAssetOnInport = false;
-		static const bool _showImportDebug = false;
-
-
-
 		/** constructor */
 		The5Application(const bs::START_UP_DESC& desc);
-
 		/** generate a default startupDesc */
 		static bs::START_UP_DESC defaultStartupDesc();
-
 		/** generate a default startupDesc */
 		static bs::SPtr<bs::RenderSettings> defaultRenderSettings();
-
 
 		///start
 		//** shortcut that calls Application::startUp<The5Application>(The5Application::defaultStartupDesc()); */
 		static void start();
-
-		void initUtilityOnly();
 
 		///static Access Points
 		/** get the The5Application object */
 		static The5Application& get();
 		/** get the mainCamera Component */
 		static bs::HCamera& mainCamera();
-
-		///Asset Loading
-		/** import a mesh and save it as Banshee .asset if it does not exist yet**/
-		static bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale = 1.0f, bool forceInport = false);
-		/** import a texture and save it as Banshee .asset if it does not exist yet**/
-		static bs::HTexture loadTexture(const bs::Path& originalFilePath, bool isSRGB = false, bool isCubemap = false, bool isHDR = false, bool forceInport = false);
-		
-		///Default Assets
-		/** get default shader */
-		static bs::HMaterial& getDefaultPBRMaterial();
-		/** Cube */
-		static bs::HMesh& getDefaultCube();
-		/** Sphere */
-		static bs::HMesh& getDefaultSphere();
-		/** Palane */
-		bs::HMesh & getDefaultPlane();
 
 	protected:
 		///private Fields
@@ -80,10 +53,6 @@ namespace The5
 		void postUpdate() override;
 
 		///Setup
-		/** loads default assets */
-		void initDefaultAssets();
-		/** set default key bindings */
-		void initDefaultKeyBindings();
 		/** configures the Renderer */
 		void initRenderer();
 		/** create the main camera SO and Component and attach further components */
@@ -91,23 +60,11 @@ namespace The5
 		/** create the GUI camera SO and Component and attach further components */
 		void initGUI();
 
-
 		///Callbacks
 	    /** method registering all the Callbacks at their corresponding Events*/
 		void initCallbacks();
 		/** handles camera Aspect etc. */
 		void windowResizeCallback();
-
-		///Default Assets
-		bs::HShader defaultPBRShader;
-		bs::HMaterial defaultPBRMaterial;
-		bs::HTexture defaultTexture_Albedo;
-		bs::HTexture defaultTexture_Normals;
-		bs::HTexture defaultTexture_Roughness;
-		bs::HTexture defaultTexture_Metalness;
-		bs::HMesh defaultCube;
-		bs::HMesh defaultSphere;
-		bs::HMesh defaultPlane;
 
 	};
 

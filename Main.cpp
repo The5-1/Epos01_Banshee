@@ -12,6 +12,7 @@
 #include "The5Application.h"
 #include "The5Utility.h"
 #include "The5DefaultAssets.h"
+#include "The5InputConfig.h"
 //#include "BansheeHelper.h"
 
 ///Components
@@ -38,12 +39,23 @@ int main()
 #define USE_THE5_APPLICATION
 #ifdef USE_THE5_APPLICATION
 	The5Application::start();
-	The5::DefaultAssets::init();
 #else
 	Application::startUp(VideoMode(1280,720), "Epos", false);
 	The5::DefaultAssets::init();
-	//The5Application* the5app = new The5Application(The5Application::defaultStartupDesc());
-	//the5app->initUtilityOnly();
+	The5::InputConfig::initDefaultKeyBindings();
+
+	HSceneObject sceneCameraSO = SceneObject::create("SceneCamera");
+	SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
+	//window->onResized.connect(&renderWindowResized);
+	HCamera sceneCamera = sceneCameraSO->addComponent<CCamera>();
+	sceneCamera->getViewport()->setTarget(window);
+	sceneCamera->setPriority(1);
+	sceneCamera->setNearClipDistance(5);
+	sceneCamera->setFarClipDistance(10000);
+	sceneCamera->setAspectRatio(1280 / (float)720);
+	sceneCameraSO->addComponent<CameraFlyer>();
+	sceneCameraSO->setPosition(Vector3(-130.0f, 140.0f, 650.0f));
+	sceneCameraSO->lookAt(Vector3(0, 0, 0));
 #endif
 
 	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
