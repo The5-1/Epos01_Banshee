@@ -1,5 +1,6 @@
 #include "The5Utility.h"
 
+#include "The5Config.h"
 #include "include_Banshee.h"
 
 using namespace bs;
@@ -7,11 +8,23 @@ using namespace bs;
 namespace The5 {
 	namespace Utility
 	{
+		bs::Path convertPathToBansheeAssetDir(const bs::Path& originalFilePath, const std::string& typeFolder)
+		{		
+			Path filename = originalFilePath.getFilename(true);
+
+			std::string bansheepath = std::string(The5::GLOBAL_ASSET_BANSHEE_PATH + typeFolder);
+			Path bansheeAssetPath = bansheepath.c_str();
+			bansheeAssetPath.append(filename);
+			bansheeAssetPath.setExtension(originalFilePath.getExtension() + ".asset");
+			//std::wcout << bansheeAssetPath.toWString() << std::endl;
+			return bansheeAssetPath;
+		}
+
+
 		bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale, bool forceInport)
 		{
 			const bool debugPrint = The5::Utility::showImportDebug;
-			Path assetPath = originalFilePath;
-			assetPath.setExtension(originalFilePath.getExtension() + ".asset");
+			Path assetPath = convertPathToBansheeAssetDir(originalFilePath,"Meshes");
 
 			//Try loading existing exported Asset
 			if (debugPrint) Debug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
@@ -29,13 +42,17 @@ namespace The5 {
 					MeshImportOptions* importOptions = static_cast<MeshImportOptions*>(meshImportOptions.get());
 
 					importOptions->setImportScale(scale);
+
+					model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
+
+					// Save for later use, so we don't have to import on the next run.
+					if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+					gResources().save(model, assetPath, true);
 				}
-
-				model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
-
-				// Save for later use, so we don't have to import on the next run.
-				if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
-				gResources().save(model, assetPath, true);
+				else
+				{
+					gDebug().logWarning("The provided path is pointing to a non-mesh resource!");
+				}
 			}
 			else
 			{
@@ -48,8 +65,7 @@ namespace The5 {
 		bs::HTexture loadTexture(const bs::Path & originalFilePath, bool isSRGB, bool isCubemap, bool isHDR, bool forceInport)
 		{
 			const bool debugPrint = The5::Utility::showImportDebug;
-			Path assetPath = originalFilePath;
-			assetPath.setExtension(originalFilePath.getExtension() + ".asset");
+			Path assetPath = convertPathToBansheeAssetDir(originalFilePath,"Textures");
 
 			if (debugPrint) gDebug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 			HTexture texture = gResources().load<Texture>(assetPath);
@@ -83,14 +99,19 @@ namespace The5 {
 					// Importing using a HDR format if requested
 					if (isHDR) importOptions->setFormat(PF_RG11B10F);
 
+					// Import texture with specified import options
+					texture = gImporter().import<Texture>(originalFilePath, textureImportOptions);
+
+					// Save for later use, so we don't have to import on the next run.
+					if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
+					gResources().save(texture, assetPath, true);
+
+				}
+				else
+				{
+					gDebug().logWarning("The provided path is pointing to a non-texture resource!");
 				}
 
-				// Import texture with specified import options
-				texture = gImporter().import<Texture>(originalFilePath, textureImportOptions);
-
-				// Save for later use, so we don't have to import on the next run.
-				if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
-				gResources().save(texture, assetPath, true);
 			}
 			else
 			{

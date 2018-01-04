@@ -13,6 +13,8 @@ namespace The5 {
 		/** force to rebuild .asset files */
 		const bool forceRebuildAssetOnImport = false;
 
+		bs::Path convertPathToBansheeAssetDir(const bs::Path& originalFilePath, const std::string& typeFolder);
+
 		/** import a mesh and save it as Banshee .asset if it does not exist yet**/
 		bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale = 1.0f, bool forceInport = false);
 		/** import a texture and save it as Banshee .asset if it does not exist yet**/

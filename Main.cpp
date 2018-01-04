@@ -62,6 +62,10 @@ int main()
 
 	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
+	Vector3 aabbsize = DefaultAssets::defaultCube->getProperties().getBounds().getBox().getSize();
+	gDebug().logDebug("defaultCube AABB size: " + bs::toString(aabbsize));
+	//The5::Utility::convertPathToBansheeAssetDir(MESH_SPONZA.c_str(), "Meshes");
+
 	HSceneObject sunlightSO = SceneObject::create("Sun");
 	sunlightSO->setPosition(Vector3(-20, 200, 0));
 	sunlightSO->lookAt(Vector3(0.0, 0.0, 0.0));
@@ -77,12 +81,12 @@ int main()
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
-	
 
 	HSceneObject sphereSO = SceneObject::create("Sphere");
 	sphereSO->setPosition(Vector3(0.0f, 10.0f, 0.0f));
-	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*100.0);
+	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10.0);
 	HRigidbody sphereSO_RB = sphereSO->addComponent<CRigidbody>();
+	sphereSO_RB->addForce(Vector3(0.1f, 20.0f, 0.1f));
 	HSphereCollider sphereSO_Collider = sphereSO->addComponent<CSphereCollider>();
 	sphereSO_Collider->setRadius(0.01f);
 	HRenderable sphereSO_CRenderable = sphereSO->addComponent<CRenderable>();
@@ -91,8 +95,7 @@ int main()
 
 	HSceneObject groundSO = SceneObject::create("Ground");
 	groundSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10000.0);
-	groundSO->lookAt(Vector3(0.1f, 0.1f, 1.0f),Vector3(0.0f,1.0f,0.0f));
-//	HRigidbody groundSO_RB = groundSO->addComponent<CRigidbody>();
+	//groundSO->lookAt(Vector3(0.1f, 0.1f, 1.0f),Vector3(0.0f,1.0f,0.0f));
 	HPlaneCollider groundSO_Collider = groundSO->addComponent<CPlaneCollider>();
 	groundSO_Collider->setNormal(Vector3(0.0f, 1.0f, 0.0f));
 	HRenderable groundSO_CRenderable = groundSO->addComponent<CRenderable>();

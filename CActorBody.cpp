@@ -34,7 +34,7 @@ namespace The5
 
 	void ActorBodySkeleton::joinSceneObjects()
 	{
-
+		//http://docs.banshee3d.com/Native/joints.html
 
 	}
 
@@ -46,6 +46,7 @@ namespace The5
 
 	void ActorBodySkeleton::createBone(bs::String name, HSceneObject & outSO)
 	{
+		//http://docs.banshee3d.com/Native/bones.html
 		outSO = SceneObject::create(name);
 		//outSO->addComponent<CBone>();
 	}
