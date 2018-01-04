@@ -7,14 +7,17 @@ namespace The5 {
 
 	struct ActorBodyStature
 	{
-		float headSize = 0.1f;
+		float hipHeight = 1.0f;
+		float chestHeight = 0.8f;
+		float neckHeight = 0.1f;
 		float armLength = 1.0f;
+
+		float chestWidth = 0.3f; //Shoulder
+		float hipWidth = 0.2f; //Pelvis
+
+		float headSize = 0.1f;
 		float handSize = 0.05f;
 		float footSize = 0.07f;
-		float chestHeight = 0.8f;
-		float chestWidth = 0.3f;
-		float hipHeight = 1.0f;
-		float hipWidth = 0.2f;
 	};
 
 	class ActorBodySkeleton
@@ -35,6 +38,7 @@ namespace The5 {
 		ActorBodyStature stature;
 	
 		bs::HSceneObject root;
+
 		bs::HSceneObject pelvis;
 		bs::HSceneObject belly;
 		bs::HSceneObject chest;

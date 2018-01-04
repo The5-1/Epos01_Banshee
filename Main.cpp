@@ -78,16 +78,29 @@ int main()
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
 	
+
+	HSceneObject sphereSO = SceneObject::create("Sphere");
+	sphereSO->setPosition(Vector3(0.0f, 10.0f, 0.0f));
+	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*100.0);
+	HRigidbody sphereSO_RB = sphereSO->addComponent<CRigidbody>();
+	HSphereCollider sphereSO_Collider = sphereSO->addComponent<CSphereCollider>();
+	sphereSO_Collider->setRadius(0.01f);
+	HRenderable sphereSO_CRenderable = sphereSO->addComponent<CRenderable>();
+	sphereSO_CRenderable->setMesh(DefaultAssets::defaultSphere);
+	sphereSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
+
 	HSceneObject groundSO = SceneObject::create("Ground");
-	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*100.0);
+	groundSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10000.0);
+	groundSO->lookAt(Vector3(0.1f, 0.1f, 1.0f),Vector3(0.0f,1.0f,0.0f));
+//	HRigidbody groundSO_RB = groundSO->addComponent<CRigidbody>();
+	HPlaneCollider groundSO_Collider = groundSO->addComponent<CPlaneCollider>();
+	groundSO_Collider->setNormal(Vector3(0.0f, 1.0f, 0.0f));
 	HRenderable groundSO_CRenderable = groundSO->addComponent<CRenderable>();
 	groundSO_CRenderable->setMesh(DefaultAssets::defaultPlane);
 	groundSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
-	
 	HSceneObject player = SceneObject::create("Player");
 	HActorBody playerSO_CRenderable = player->addComponent<CActorBody>();
-
 
 	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();
 	//playerSO_Controller->setHeight(playerHeight);

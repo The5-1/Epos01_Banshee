@@ -69,16 +69,34 @@
 #include "Utility/BsTimer.h"
 #include "Utility/BsDrawHelper.h"
 
+#include "Animation/BsAnimation.h"
+#include "Components/BsCAnimation.h"
+#include "Components/BsCBone.h"
+#include "Animation/BsSkeleton.h"
+
 #include "Physics/BsPhysicsCommon.h"
+#include "Physics/BsRigidbody.h"
+#include "Components/BsCRigidbody.h"
 #include "Physics/BsCharacterController.h"
+#include "Components/BsCCharacterController.h"
+#include "Physics/BsCollider.h"
+#include "Components/BsCCollider.h"
+#include "Physics/BsJoint.h"
+#include "Components/BsCJoint.h"
+#include "Physics/BsBoxCollider.h"
+#include "Components/BsCBoxCollider.h"
+#include "Physics/BsPlaneCollider.h"
+#include "Components/BsCPlaneCollider.h"
+#include "Physics/BsSphereCollider.h"
+#include "Components/BsCSphereCollider.h"
+#include "Physics/BsCapsuleCollider.h"
+#include "Components/BsCCapsuleCollider.h"
 
 #include "Components/BsCCamera.h"
 #include "Components/BsCRenderable.h"
 #include "Components/BsCLight.h"
 #include "Components/BsCSkybox.h"
-#include "Components/BsCCharacterController.h"
-#include "Components/BsCBone.h"
-#include "Components/BsCJoint.h"
+
 
 #include "BsEngineConfig.h"
 
