@@ -7,6 +7,8 @@
 #include "Math/BsMath.h"
 #include "Input/BsVirtualInput.h"
 
+#include "Debug/BsDebugDraw.h"
+
 namespace bs
 {
 	/** 
@@ -22,7 +24,12 @@ namespace bs
 		virtual void update();
 
 	private:
+
+		void drawDebugInfo();
+
 		float mCurrentSpeed; /**< Current speed of the camera. */
+
+		DebugDraw mDebugDraw;
 
 		Degree mPitch; /**< Current pitch rotation of the camera (looking up or down). */
 		Degree mYaw; /**< Current yar rotation of the camera (looking left or right). */

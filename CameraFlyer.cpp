@@ -1,5 +1,6 @@
 //********************************** Banshee Engine (www.banshee3d.com) **************************************************//
 //**************** Copyright (c) 2016 Marko Pintera (marko.pintera@gmail.com). All rights reserved. **********************//
+
 #include "CameraFlyer.h"
 #include "include_Banshee.h"
 
@@ -38,11 +39,12 @@ namespace bs
 		mRotateCam = VirtualButton("RMB");
 		mHorizontalAxis = VirtualAxis("Horizontal");
 		mVerticalAxis = VirtualAxis("Vertical");
+
+		mCamera = SO()->getComponent<CCamera>();
 	}
 
 	void CameraFlyer::update()
 	{
-
 		// Check if any movement or rotation keys are being held
 		bool goingForward = gVirtualInput().isButtonHeld(mMoveForward);
 		bool goingBack = gVirtualInput().isButtonHeld(mMoveBack);
@@ -120,5 +122,22 @@ namespace bs
 			Vector3 velocity = direction * mCurrentSpeed;
 			SO()->move(velocity * frameDelta);
 		}
+
+		drawDebugInfo();
+	}
+
+
+	void CameraFlyer::drawDebugInfo()
+	{
+		mDebugDraw._update();
+		mDebugDraw.clear();
+		mDebugDraw.setColor(Color(0.0f, 0.0f, 1.0f, 0.5f));
+		//mDebugDrawer.drawWireSphere(SO()->getLocalTransform().pos(), 1.0f);
+		//mDebugDrawer.drawFrustum(SO()->getTransform().pos(), mCamera->getAspectRatio(), mCamera->getHorzFOV(), mCamera->getNearClipDistance(), mCamera->getFarClipDistance());
+
+		//DebugDraw::instancePtr()->clear(); //clear previous debug draws
+		//DebugDraw::instancePtr()->setColor(Color(1.0f, 0.0f, 0.0f, 1.0f));
+		//DebugDraw::instancePtr()->drawWireSphere(SO()->getLocalTransform().pos(), 1.0f);
+
 	}
 }

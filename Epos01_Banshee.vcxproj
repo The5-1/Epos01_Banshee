@@ -277,6 +277,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CActorBody.cpp" />
     <ClCompile Include="CameraFlyer.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -285,7 +286,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="The5DefaultAssets.cpp" />
     <ClCompile Include="The5InputConfig.cpp" />
     <ClCompile Include="The5Utility.cpp" />
+    <ClInclude Include="CActorBody.h" />
     <ClInclude Include="CameraFlyer.h" />
+    <ClInclude Include="CComboState.h" />
     <ClInclude Include="ForwardDeclarations.h" />
     <ClInclude Include="include_Banshee.h" />
     <ClInclude Include="include_STL.h" />

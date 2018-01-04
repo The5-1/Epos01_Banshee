@@ -110,10 +110,14 @@ namespace The5
 	void The5Application::preUpdate()
 	{
 		Application::preUpdate();
+
+		//DebugDraw::instancePtr()->clear(); //clear previous debug draws
+
 	}
 
 	void The5Application::postUpdate()
 	{	
+		
 		Application::postUpdate();
 	}
 

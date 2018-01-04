@@ -13,6 +13,8 @@
 #include "The5Utility.h"
 #include "The5DefaultAssets.h"
 #include "The5InputConfig.h"
+#include "CActorBody.h"
+
 //#include "BansheeHelper.h"
 
 ///Components
@@ -60,7 +62,7 @@ int main()
 
 	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
-	HSceneObject sunlightSO = SceneObject::create("Light A");
+	HSceneObject sunlightSO = SceneObject::create("Sun");
 	sunlightSO->setPosition(Vector3(-20, 200, 0));
 	sunlightSO->lookAt(Vector3(0.0, 0.0, 0.0));
 	HLight sunlightC = sunlightSO->addComponent<CLight>();
@@ -77,19 +79,32 @@ int main()
 	skyboxC->setBrightness(0.1f);
 	
 	HSceneObject groundSO = SceneObject::create("Ground");
-	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*100000.0);
+	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*100.0);
 	HRenderable groundSO_CRenderable = groundSO->addComponent<CRenderable>();
 	groundSO_CRenderable->setMesh(DefaultAssets::defaultPlane);
 	groundSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
+	
+	HSceneObject player = SceneObject::create("Player");
+	HActorBody playerSO_CRenderable = player->addComponent<CActorBody>();
+
+
+	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();
+	//playerSO_Controller->setHeight(playerHeight);
+	//playerSO_Controller->setRadius(playerRadius);
+	//playerSO_Controller->setUp(Vector3::UNIT_Y);
+	
+	
+	/*
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
 	sponzaSO_CRenderable->setMesh(DefaultAssets::defaultSponza);
 	sponzaSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
-	
-	DebugDraw::instancePtr()->setColor(Color(1.0f, 0.0f, 0.0f, 1.0f));
-	DebugDraw::instancePtr()->drawWireSphere(Vector3(0.0f, 0.0f, 0.0f), 1.0f);
-	DebugDraw::instancePtr()->drawWireCube(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.5,0.5,0.5));
+	*/
+
+	//DebugDraw::instancePtr()->setColor(Color(1.0f, 0.0f, 0.0f, 1.0f));
+	//DebugDraw::instancePtr()->drawWireSphere(Vector3(0.0f, 0.0f, 0.0f), 1.0f);
+	//DebugDraw::instancePtr()->drawWireCube(Vector3(0.0f, 0.5f, 0.0f), Vector3(0.5,0.5,0.5));
    
 	//The5Application::getThe5Application().mainCamera()->setNearClipDistance(0.0001f);
 	std::cout << "Camera Name: " << The5Application::getThe5Application().mainCamera()->getName() << std::endl;
@@ -105,7 +120,7 @@ int main()
 	gDebug().logDebug(toString(testSO_CRenderable->getMesh()->getProperties().getNumVertices()));
 	*/
 
-	/*
+	
 	for (int x = -5; x <= 5; x++)
 	{
 		for (int z = -5; z <= 5; z++)
@@ -118,7 +133,7 @@ int main()
 			spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
 		}
 	}
-	*/
+	
 
 	/*
 	for (int i = 0; i < 100; i++)

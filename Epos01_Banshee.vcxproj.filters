@@ -23,6 +23,9 @@
     <ClCompile Include="The5InputConfig.cpp">
       <Filter>Source Files\The5Banshee</Filter>
     </ClCompile>
+    <ClCompile Include="CActorBody.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logging.h">
@@ -57,6 +60,12 @@
     </ClInclude>
     <ClInclude Include="The5InputConfig.h">
       <Filter>Source Files\The5Banshee</Filter>
+    </ClInclude>
+    <ClInclude Include="CComboState.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CActorBody.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

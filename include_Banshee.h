@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BsPrerequisites.h"
+
 #include "BsApplication.h"
 #include "CoreThread/BsCoreThread.h"
 
@@ -12,13 +14,13 @@
 #include "Debug/BsDebugDraw.h"
 #include "Debug/BsBitmapWriter.h"
 
-
 #include "Math/BsMath.h"
 #include "Math/BsVector3.h"
 #include "Math/BsQuaternion.h"
 
 #include "Scene/BsSceneObject.h"
 #include "Scene/BsSceneManager.h"
+#include "Scene/BsComponent.h"
 
 #include "Renderer/BsRenderer.h"
 #include "Renderer/BsRenderSettings.h"
@@ -74,6 +76,9 @@
 #include "Components/BsCRenderable.h"
 #include "Components/BsCLight.h"
 #include "Components/BsCSkybox.h"
+#include "Components/BsCCharacterController.h"
+#include "Components/BsCBone.h"
+#include "Components/BsCJoint.h"
 
 #include "BsEngineConfig.h"
 
