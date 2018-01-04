@@ -1,12 +1,7 @@
 //********************************** Banshee Engine (www.banshee3d.com) **************************************************//
 //**************** Copyright (c) 2016 Marko Pintera (marko.pintera@gmail.com). All rights reserved. **********************//
 #include "CameraFlyer.h"
-#include "Math/BsVector3.h"
-#include "Utility/BsTime.h"
-#include "Math/BsMath.h"
-#include "Scene/BsSceneObject.h"
-#include "Components/BsCCamera.h"
-#include "Platform/BsCursor.h"
+#include "include_Banshee.h"
 
 namespace bs
 {
@@ -47,6 +42,7 @@ namespace bs
 
 	void CameraFlyer::update()
 	{
+
 		// Check if any movement or rotation keys are being held
 		bool goingForward = gVirtualInput().isButtonHeld(mMoveForward);
 		bool goingBack = gVirtualInput().isButtonHeld(mMoveBack);

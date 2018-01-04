@@ -65,7 +65,7 @@ int main()
 	sunlightSO->lookAt(Vector3(0.0, 0.0, 0.0));
 	HLight sunlightC = sunlightSO->addComponent<CLight>();
 	//sunlightC->setType(LightType::Directional);
-	//sunlightC->setSourceRadius(1.0); //Area light, must be 0.25 or so for sun
+	sunlightC->setSourceRadius(50.0); //Area light, must be 0.25 or so for sun
 	sunlightC->setCastsShadow(true);
 	sunlightC->setUseAutoAttenuation(false);
 	sunlightC->setAttenuationRadius(1000.0f);
@@ -73,26 +73,25 @@ int main()
 
 	HSceneObject skyboxSO = SceneObject::create("Skybox");
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
-	//skyboxC->setTexture(The5Application::loadTexture(TEX_SKYBOX.c_str(), false, true, true));
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
-
 	
 	HSceneObject groundSO = SceneObject::create("Ground");
-	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*10000.0);
+	groundSO->setScale(Vector3(1.0f,1.0f,1.0f)*100000.0);
 	HRenderable groundSO_CRenderable = groundSO->addComponent<CRenderable>();
 	groundSO_CRenderable->setMesh(DefaultAssets::defaultPlane);
 	groundSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
-	
-
 	
 	HSceneObject sponzaSO = SceneObject::create("Sponza");
 	HRenderable sponzaSO_CRenderable = sponzaSO->addComponent<CRenderable>();
 	sponzaSO_CRenderable->setMesh(DefaultAssets::defaultSponza);
 	sponzaSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
+	DebugDraw::instancePtr()->setColor(Color(1.0f, 0.0f, 0.0f, 1.0f));
+	DebugDraw::instancePtr()->drawWireSphere(Vector3(0.0f, 0.0f, 0.0f), 1.0f);
+	DebugDraw::instancePtr()->drawWireCube(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.5,0.5,0.5));
+   
 	//The5Application::getThe5Application().mainCamera()->setNearClipDistance(0.0001f);
-	
 	std::cout << "Camera Name: " << The5Application::getThe5Application().mainCamera()->getName() << std::endl;
 	std::cout << "near: " << The5Application::getThe5Application().mainCamera()->getNearClipDistance() << std::endl;
 	std::cout << "far: " << The5Application::getThe5Application().mainCamera()->getFarClipDistance() << std::endl;
@@ -107,20 +106,16 @@ int main()
 	*/
 
 	/*
-	for (int x = -10; x < 10; x++)
+	for (int x = -5; x <= 5; x++)
 	{
-		for (int y = -10; y < 10; y++)
+		for (int z = -5; z <= 5; z++)
 		{
-			for (int z = -10; x < 10; z++)
-			{
-				std::string name = "Grid";
-				HSceneObject spam = SceneObject::create(name.c_str());
-				spam->move(Vector3(x*1.0f, y*1.0f, z*1.0f));
-				spam->setScale(Vector3(200.0, 200.0, 200.0));
-				HRenderable spamR = spam->addComponent<CRenderable>();
-				spamR->setMesh(DefaultAssets::defaultCube);
-				spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
-			}
+			HSceneObject spam = SceneObject::create("Grid");
+			spam->move(Vector3(x*1.0f, 0.0f, z*1.0f));
+			spam->setScale(Vector3(1.0, 1.0, 1.0)*10.0f);
+			HRenderable spamR = spam->addComponent<CRenderable>();
+			spamR->setMesh(DefaultAssets::defaultCube);
+			spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
 		}
 	}
 	*/
@@ -147,6 +142,20 @@ int main()
 	Application::instance().runMainLoop();
 
 	Application::shutDown();
+
+	/*
+	DrawHelper drawhelper = DrawHelper();
+	drawhelper.setLayer(2);
+	drawhelper.setColor(Color(1.0f, 0.0f, 0.0f, 1.0f));
+	drawhelper.wireCube(Vector3(0.0, 0.0, 0.0), Vector3(1.0, 1.0, 1.0)*200.0);
+	drawhelper.buildMeshes();
+	Vector<DrawHelper::ShapeMeshData> meshes = drawhelper.getMeshes();
+	for (DrawHelper::ShapeMeshData s : meshes)
+	{
+	s.mesh
+	}
+	*/
+
 
 	//testSO->setScale(Vector3(0.2,0.2,0.2));
 

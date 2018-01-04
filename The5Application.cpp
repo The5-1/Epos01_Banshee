@@ -28,6 +28,8 @@ namespace The5
 
 		// Use default values as specified by the build system
 		The5_ApplicationDesc.renderAPI = BS_RENDER_API_MODULE;
+		//The5_ApplicationDesc.renderAPI = "BansheeGLRenderAPI";
+		//The5_ApplicationDesc.renderAPI = "BansheeD3D11RenderAPI";
 		The5_ApplicationDesc.renderer = BS_RENDERER_MODULE;
 		The5_ApplicationDesc.audio = BS_AUDIO_MODULE;
 		The5_ApplicationDesc.physics = BS_PHYSICS_MODULE;
@@ -56,7 +58,7 @@ namespace The5
 		SPtr<RenderSettings> settings = bs_shared_ptr_new<RenderSettings>();
 		settings->enableLighting = true;
 		settings->enableIndirectLighting = false; //without this everything is black if you dont place lights manually
-		settings->enableShadows = false;
+		settings->enableShadows = true;
 		settings->enableAutoExposure = false;
 		settings->enableFXAA = false;
 		settings->enableHDR = false;
@@ -140,7 +142,7 @@ namespace The5
 
 		/// Set up camera component properties
 		mMainCameraC->setPriority(1); //priority when multiple cameras write to the same buffer (e.g. GUI camera over main window)
-		mMainCameraC->setNearClipDistance(10.1f);
+		mMainCameraC->setNearClipDistance(0.01f);
 		mMainCameraC->setFarClipDistance(200.0);
 		mMainCameraC->setAspectRatio(windowProps.width / (float)windowProps.height);
 		mMainCameraC->setMSAACount(1); //needs to be at least 1!!!

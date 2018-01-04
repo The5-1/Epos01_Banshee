@@ -7,6 +7,16 @@
 #include "Resources/BsBuiltinResources.h"
 #include "Resources/BsBuiltinResourcesHelper.h"
 
+#include "Debug/BsLog.h"
+#include "Debug/BsDebug.h"
+#include "Debug/BsDebugDraw.h"
+#include "Debug/BsBitmapWriter.h"
+
+
+#include "Math/BsMath.h"
+#include "Math/BsVector3.h"
+#include "Math/BsQuaternion.h"
+
 #include "Scene/BsSceneObject.h"
 #include "Scene/BsSceneManager.h"
 
@@ -27,8 +37,6 @@
 #include "RenderAPI/BsIndexBuffer.h"
 #include "RenderAPI/BsVertexDataDesc.h"
 
-#include "Math/BsQuaternion.h"
-
 #include "Mesh/BsMesh.h"
 #include "Mesh/BsMeshBase.h"
 #include "Mesh/BsMeshData.h"
@@ -43,10 +51,7 @@
 
 #include "Input/BsVirtualInput.h"
 
-#include "Components/BsCCamera.h"
-#include "Components/BsCRenderable.h"
-#include "Components/BsCLight.h"
-#include "Components/BsCSkybox.h"
+#include "Platform/BsCursor.h"
 
 #include "GUI/BsCGUIWidget.h"
 #include "GUI/BsGUILayoutX.h"
@@ -65,4 +70,10 @@
 #include "Physics/BsPhysicsCommon.h"
 #include "Physics/BsCharacterController.h"
 
+#include "Components/BsCCamera.h"
+#include "Components/BsCRenderable.h"
+#include "Components/BsCLight.h"
+#include "Components/BsCSkybox.h"
+
 #include "BsEngineConfig.h"
+

@@ -27,8 +27,8 @@ namespace The5
 
 	const std::string TEX_ALBEDO = GLOBAL_TEXTURE_PATH + "Gray50.png";
 	const std::string TEX_NORMAL = GLOBAL_TEXTURE_PATH + "Normal.png";
-	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "Gray10.png";
-	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "Gray90.png";
+	const std::string TEX_ROUGHNESS = GLOBAL_TEXTURE_PATH + "Gray50.png";
+	const std::string TEX_METALNESS = GLOBAL_TEXTURE_PATH + "Gray00.png";
 
 	const std::string TEX_SOFA_ALBEDO = GLOBAL_TEXTURE_PATH + "sofa_albedo.png";
 	const std::string TEX_SOFA_NORMAL = GLOBAL_TEXTURE_PATH + "sofa_normal.png";
