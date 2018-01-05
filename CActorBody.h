@@ -41,7 +41,11 @@ namespace The5 {
 
 		void parentSceneObjects();
 
+		
+
 		void joinAllBones();
+
+		void attachToRoot(ActorBodyBone & pelvis);
 
 		void attachBoneTo(ActorBodyBone & child, ActorBodyBone & parent);
 
@@ -60,7 +64,7 @@ namespace The5 {
 	
 		bs::HPhysicsMaterial mPhysicsMat;
 
-		bs::HSceneObject root;
+		ActorBodyBone root;
 
 		ActorBodyBone pelvis;
 		ActorBodyBone belly;

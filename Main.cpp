@@ -112,7 +112,9 @@ int main()
 	
 	HSceneObject player = SceneObject::create("Player");
 	HActorBody player_body = player->addComponent<CActorBody>();
-	HMover player_mover = player->addComponent<CMover>();
+	HRigidbody player_RB = player->addComponent<CRigidbody>();
+	player_RB->setIsKinematic(true);
+	HMover player_mover = player->addComponent<CMover>(CMoverType::ControlledMove);
 
 
 	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();
@@ -152,8 +154,10 @@ int main()
 		for (int z = -5; z <= 5; z++)
 		{
 			HSceneObject spam = SceneObject::create("Grid");
-			spam->move(Vector3(x*1.0f, 0.0f, z*1.0f));
-			spam->setScale(Vector3(1.0, 1.0, 1.0)*10.0f);
+			spam->move(Vector3(x*0.5f, 0.0f, z*0.5f));
+			spam->setScale(Vector3(1.0, 10.0, 1.0)*10.0f);
+			HBoxCollider bc = spam->addComponent<CBoxCollider>();
+			bc->setExtents(Vector3().ONE*0.01f);
 			HRenderable spamR = spam->addComponent<CRenderable>();
 			spamR->setMesh(DefaultAssets::defaultCube);
 			spamR->setMaterial(DefaultAssets::defaultPBRMaterial);

@@ -99,6 +99,8 @@
 #include "Components/BsCCapsuleCollider.h"
 #include "Physics/BsJoint.h"
 #include "Components/BsCJoint.h"
+#include "Physics/BsFixedJoint.h"
+#include "Components/BsCFixedJoint.h"
 #include "Physics/BsHingeJoint.h"
 #include "Components/BsCHingeJoint.h"
 #include "Physics/BsSphericalJoint.h"

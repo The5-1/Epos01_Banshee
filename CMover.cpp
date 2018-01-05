@@ -65,8 +65,8 @@ namespace The5
 		}
 		case(CMoverType::ControlledPhysics):
 		{
-			if(RB != nullptr)
-				RB->addForce(velocity, ForceMode::Acceleration);
+			if (RB != nullptr)
+				RB->addForce(velocity, ForceMode::Impulse);
 			return;
 		}
 		case(CMoverType::RandomMove):

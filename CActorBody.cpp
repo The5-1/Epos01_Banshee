@@ -4,21 +4,27 @@ using namespace bs;
 
 namespace The5
 {
-	ActorBodySkeleton::ActorBodySkeleton(CActorBody& actorBodyComponent) : mActorBodyComponent(actorBodyComponent), root(actorBodyComponent.SO()) //must be done in initializer since refs can not be be nullptr
+	ActorBodySkeleton::ActorBodySkeleton(CActorBody& actorBodyComponent) : mActorBodyComponent(actorBodyComponent) //must be done in initializer since refs can not be be nullptr
 	{
 
 		mPhysicsMat = PhysicsMaterial::create();
-		mPhysicsMat->setDynamicFriction(0.8);
-		mPhysicsMat->setStaticFriction(1.0);
+		mPhysicsMat->setDynamicFriction(0.5);
+		mPhysicsMat->setStaticFriction(0.5);
 
 		createSceneObjects();
 		parentSceneObjects();
-		refreshStature();
+		//refreshStature();
 		joinAllBones();
 	}
 
 	void ActorBodySkeleton::createSceneObjects()
 	{
+		root.SO = mActorBodyComponent.SO();
+		root.RB = root.SO->getComponent<CRigidbody>();
+		if (root.RB == nullptr)
+			root.RB = root.SO->addComponent<CRigidbody>();
+		root.RB->setIsKinematic(true);
+
 		createBone_macro(pelvis);
 		createBone_macro(belly);
 		createBone_macro(chest);
@@ -41,7 +47,7 @@ namespace The5
 	void ActorBodySkeleton::parentSceneObjects()
 	{
 
-		pelvis.SO->setParent(root);
+		pelvis.SO->setParent(root.SO);
 
 		belly.SO->setParent(pelvis.SO);
 		chest.SO->setParent(belly.SO);
@@ -65,6 +71,9 @@ namespace The5
 		footR.SO->setParent(legLowerR.SO);
 	}
 
+
+
+
 	void ActorBodySkeleton::joinAllBones()
 	{
 		//http://docs.banshee3d.com/Native/joints.html
@@ -72,7 +81,7 @@ namespace The5
 		//root.joint->setBody(JointBody::Target, belly.RB);
 
 
-		//attachBoneTo(pelvis, root);
+		attachToRoot(pelvis);
 		attachBoneTo(belly, pelvis);
 		attachBoneTo(chest, belly);
 		attachBoneTo(neck, chest);
@@ -134,14 +143,24 @@ namespace The5
 
 	}
 
+	void ActorBodySkeleton::attachToRoot(ActorBodyBone & pelvis)
+	{
+		/*
+		root.joint = root.SO->addComponent<CFixedJoint>();
+		root.joint->setEnableCollision(false);
+		root.joint->setBody(JointBody::Anchor, pelvis.RB); //Body the joint is attached to (if any)
+		root.joint->setBody(JointBody::Target, root.RB); //Body the joint is influencing
+		*/
+	}
+
 	void ActorBodySkeleton::attachBoneTo(ActorBodyBone & child, ActorBodyBone & parent)
 	{
 
 #if 1
 		//sphere joint keeps the origins identical!
 		LimitConeRange limit;
-		limit.yLimitAngle = Degree(10.0f);
-		limit.zLimitAngle = Degree(10.0f);
+		limit.yLimitAngle = Degree(180.0f);
+		limit.zLimitAngle = Degree(180.0f);
 		child.joint = child.SO->addComponent<CSphericalJoint>();
 		child.joint->setBody(JointBody::Anchor, parent.RB); //Body the joint is attached to (if any)
 		child.joint->setBody(JointBody::Target, child.RB); //Body the joint is influencing
@@ -257,7 +276,7 @@ namespace The5
 		mDebugDrawer._update();
 		mDebugDrawer.clear();
 		mDebugDrawer.setColor(Color(1.0f, 1.0f, 0.25f, 1.0f));
-		mDebugDrawer.drawCube(mActorSkeleton->root->getTransform().pos(), 
+		mDebugDrawer.drawCube(mActorSkeleton->root.SO->getTransform().pos(), 
 			Vector3(1.0f, 1.0f, 1.0f)*(
 				mActorSkeleton->stature.hipHeight 
 				+ mActorSkeleton->stature.chestHeight 
@@ -279,7 +298,6 @@ namespace The5
 		mDebugDrawer.drawWireSphere(mActorSkeleton->handL.SO->getTransform().pos(), mActorSkeleton->stature.handSize*0.5);
 
 
-		//debugDrawBone(mActorSkeleton->root, mActorSkeleton->pelvis);
 		
 		debugDrawBone(mActorSkeleton->pelvis, mActorSkeleton->belly);
 		debugDrawBone(mActorSkeleton->belly, mActorSkeleton->chest);
