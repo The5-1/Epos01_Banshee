@@ -279,6 +279,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="CActorBody.cpp" />
     <ClCompile Include="CameraFlyer.cpp" />
+    <ClCompile Include="CMover.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshFactory.cpp" />
@@ -289,6 +290,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="CActorBody.h" />
     <ClInclude Include="CameraFlyer.h" />
     <ClInclude Include="CComboState.h" />
+    <ClInclude Include="CMover.h" />
     <ClInclude Include="ForwardDeclarations.h" />
     <ClInclude Include="include_Banshee.h" />
     <ClInclude Include="include_STL.h" />

@@ -77,21 +77,27 @@ int main()
 	sunlightC->setAttenuationRadius(1000.0f);
 	sunlightC->setIntensity(500000.0f);
 
+	//gPhysics().setGravity(Vector3().ZERO);
+
 	HSceneObject skyboxSO = SceneObject::create("Skybox");
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
 
+	float sphereRadius = 0.5;
 	HSceneObject sphereSO = SceneObject::create("Sphere");
-	sphereSO->setPosition(Vector3(0.0f, 10.0f, 0.0f));
-	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10.0);
+	sphereSO->setPosition(Vector3(0.0f, 4.0f, 0.0f));
+	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*sphereRadius);
 	HRigidbody sphereSO_RB = sphereSO->addComponent<CRigidbody>();
-	sphereSO_RB->addForce(Vector3(0.1f, 20.0f, 0.1f));
+	sphereSO_RB->addForce(Vector3(1.0f, -5.0f, 1.0f));
 	HSphereCollider sphereSO_Collider = sphereSO->addComponent<CSphereCollider>();
-	sphereSO_Collider->setRadius(0.01f);
+	sphereSO_Collider->setRadius(1.0f);
 	HRenderable sphereSO_CRenderable = sphereSO->addComponent<CRenderable>();
-	sphereSO_CRenderable->setMesh(DefaultAssets::defaultSphere);
+	//sphereSO_CRenderable->setMesh(DefaultAssets::defaultSphere);
+	sphereSO_CRenderable->setMesh(BuiltinResources::instancePtr()->getMesh(BuiltinMesh::Sphere));
 	sphereSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
+	
+	//DrawHelper::ShapeMeshData(ShapeMeshes3D::solidSphere()); //???
 
 	HSceneObject groundSO = SceneObject::create("Ground");
 	groundSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10000.0);
@@ -104,7 +110,7 @@ int main()
 	
 	HSceneObject player = SceneObject::create("Player");
 	HActorBody playerSO_CRenderable = player->addComponent<CActorBody>();
-	gPhysics().setGravity(Vector3().ZERO);
+
 
 	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();
 	//playerSO_Controller->setHeight(playerHeight);

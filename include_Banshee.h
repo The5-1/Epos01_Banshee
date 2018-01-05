@@ -68,6 +68,9 @@
 #include "Utility/BsTime.h"
 #include "Utility/BsTimer.h"
 #include "Utility/BsDrawHelper.h"
+#include "Utility/BsShapeMeshes3D.h"
+#include "Utility/BsShapeMeshes2D.h"
+
 
 #include "Animation/BsAnimation.h"
 #include "Components/BsCAnimation.h"
@@ -77,6 +80,7 @@
 #include "Physics/BsPhysics.h"
 #include "Physics/BsPhysicsCommon.h"
 #include "Physics/BsPhysicsManager.h"
+#include "Physics/BsPhysicsMaterial.h"
 #include "Physics/BsRigidbody.h"
 #include "Components/BsCRigidbody.h"
 #include "Physics/BsCharacterController.h"

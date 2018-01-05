@@ -39,7 +39,9 @@ namespace The5 {
 
 		void parentSceneObjects();
 
-		void joinSceneObjects();
+		void joinAllBones();
+
+		void attachBoneTo(ActorBodyBone & child, ActorBodyBone & parent);
 
 
 		void refreshStature();
@@ -52,6 +54,8 @@ namespace The5 {
 
 		ActorBodyStature stature;
 	
+		bs::HPhysicsMaterial mPhysicsMat;
+
 		ActorBodyBone root;
 
 		ActorBodyBone pelvis;
@@ -80,7 +84,8 @@ namespace The5 {
 	{
 	public:
 
-		CActorBody(const bs::HSceneObject& parent);
+		/** the constructor should just pass the parent, initialization is done in onInitialized() */
+		CActorBody(const bs::HSceneObject& parent) : bs::Component(parent) {};
 
 	protected:
 		
@@ -92,11 +97,15 @@ namespace The5 {
 
 		virtual void update() override;
 
+		void onDisabled() override;
+
+		void onEnabled() override;
+
 		//virtual void onDestroyed() override;
 
 		void refreshStature();
 
-		void debugDraw();
+		void debugDrawSkeleton();
 		void debugDrawBone(const ActorBodyBone& start, const ActorBodyBone& end);
 		void debugDrawName(const ActorBodyBone& bone);
 

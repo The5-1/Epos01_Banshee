@@ -6,10 +6,12 @@ namespace The5
 {
 	ActorBodySkeleton::ActorBodySkeleton()
 	{
+		mPhysicsMat = PhysicsMaterial::create();
+		mPhysicsMat->setDynamicFriction(0.8);
+		mPhysicsMat->setStaticFriction(1.0);
+
 		createSceneObjects();
 		parentSceneObjects();
-		refreshStature();
-		//joinSceneObjects();
 	}
 
 	void ActorBodySkeleton::createSceneObjects()
@@ -60,18 +62,42 @@ namespace The5
 		footR.SO->setParent(legLowerR.SO);
 	}
 
-	void ActorBodySkeleton::joinSceneObjects()
+	void ActorBodySkeleton::joinAllBones()
 	{
 		//http://docs.banshee3d.com/Native/joints.html
 		//root.joint = root.SO->addComponent<CSphericalJoint>();
 		//root.joint->setBody(JointBody::Target, belly.RB);
 
+		attachBoneTo(handR, armLowerR);
+		attachBoneTo(armLowerR, armUpperR);
+		attachBoneTo(armUpperR, chest);
+
+		attachBoneTo(handL, armLowerL);
+		attachBoneTo(armLowerL, armUpperL);
+		attachBoneTo(armUpperL, chest);
+
+		attachBoneTo(head, neck);
+		attachBoneTo(neck, chest);
+
+		attachBoneTo(chest, belly);
+		attachBoneTo(belly, pelvis);
+
+		attachBoneTo(footR, legLowerR);
+		attachBoneTo(legLowerR, legUpperR);
+		attachBoneTo(legUpperR, pelvis);
+
+		attachBoneTo(footL, legLowerL);
+		attachBoneTo(legLowerL, legUpperL);
+		attachBoneTo(legUpperL, pelvis);
+
+
+		/*
 		LimitConeRange limit;
-		limit.yLimitAngle = Degree(45.0f);
-		limit.zLimitAngle = Degree(45.0f);
+		limit.yLimitAngle = Degree(10.0f);
+		limit.zLimitAngle = Degree(10.0f);
 
 		chest.joint = chest.SO->addComponent<CSphericalJoint>();
-		//chest.joint->setBody(JointBody::Anchor, chest.RB);
+		chest.joint->setBody(JointBody::Anchor, chest.RB);
 		chest.joint->setBody(JointBody::Target, armUpperR.RB);
 		chest.joint->setBody(JointBody::Target, armUpperL.RB);
 		((HSphericalJoint)chest.joint)->setLimit(limit);
@@ -100,8 +126,21 @@ namespace The5
 		armLowerL.joint->setBody(JointBody::Target, handL.RB);
 		((HSphericalJoint)chest.joint)->setLimit(limit);
 		chest.joint->setEnableCollision(false);
+		*/
 
+	}
 
+	void ActorBodySkeleton::attachBoneTo(ActorBodyBone & child, ActorBodyBone & parent)
+	{
+		LimitConeRange limit;
+		limit.yLimitAngle = Degree(10.0f);
+		limit.zLimitAngle = Degree(10.0f);
+
+		child.joint = child.SO->addComponent<CSphericalJoint>();
+		child.joint->setBody(JointBody::Anchor, parent.RB);
+		child.joint->setBody(JointBody::Target, child.RB);
+		((HSphericalJoint)child.joint)->setLimit(limit);
+		child.joint->setEnableCollision(false);
 	}
 
 	void ActorBodySkeleton::refreshStature()
@@ -112,7 +151,6 @@ namespace The5
 		chest.SO->setPosition(Vector3(0.0f, stature.chestHeight*0.5, 0.0f));
 		neck.SO->setPosition(Vector3(0.0f, stature.chestHeight*0.5, 0.0f));
 		head.SO->setPosition(Vector3(0.0f, stature.neckHeight, 0.0f));
-
 
 		armUpperR.SO->setPosition(Vector3(+stature.chestWidth*0.5f, stature.chestHeight*0.5, 0.0f));
 		armUpperL.SO->setPosition(Vector3(-stature.chestWidth*0.5f, stature.chestHeight*0.5, 0.0f));
@@ -133,9 +171,11 @@ namespace The5
 	{
 		//http://docs.banshee3d.com/Native/bones.html
 		outBone.SO = SceneObject::create(name);
-		//outBone.RB = outBone.SO->addComponent<CRigidbody>();
-		//outBone.collider = outBone.SO->addComponent<CSphereCollider>();
-		//((bs::HSphereCollider)outBone.collider)->setRadius(0.05f);
+		outBone.RB = outBone.SO->addComponent<CRigidbody>();
+		//outBone.RB->setMass(5.0f);
+		outBone.collider = outBone.SO->addComponent<CSphereCollider>();
+		((bs::HSphereCollider)outBone.collider)->setRadius(0.1f);
+		outBone.collider->setMaterial(mPhysicsMat);
 	}
 
 	void ActorBodySkeleton::createJoint(bs::String name, ActorBodyBone& outBone)
@@ -144,23 +184,33 @@ namespace The5
 	}
 
 
-	CActorBody::CActorBody(const bs::HSceneObject & parent) : bs::Component(parent)
-	{
-		mActorSkeleton = std::make_unique<ActorBodySkeleton>();
-	}
-
 	void CActorBody::onInitialized()
 	{
-		setName("ActorBody");
 
-		refreshStature();
+		setName("ActorBody");
+		mActorSkeleton = std::make_unique<ActorBodySkeleton>();
+
+		mActorSkeleton->refreshStature();
+		mActorSkeleton->joinAllBones();
 	}
 
 	void CActorBody::update()
 	{
-
 		debugDraw();
 	}
+
+
+	void CActorBody::onDisabled()
+	{
+
+	}
+
+	void CActorBody::onEnabled()
+	{
+
+
+	}
+
 
 
 	void CActorBody::refreshStature()
@@ -195,8 +245,10 @@ namespace The5
 		mDebugDrawer.drawWireSphere(mActorSkeleton->footL.SO->getTransform().pos(), mActorSkeleton->stature.footSize*0.5);
 		mDebugDrawer.drawWireSphere(mActorSkeleton->handL.SO->getTransform().pos(), mActorSkeleton->stature.handSize*0.5);
 
+
+		debugDrawBone(mActorSkeleton->root, mActorSkeleton->pelvis);
 		
-		debugDrawBone(mActorSkeleton->root, mActorSkeleton->belly);
+		debugDrawBone(mActorSkeleton->pelvis, mActorSkeleton->belly);
 		debugDrawBone(mActorSkeleton->belly, mActorSkeleton->chest);
 		debugDrawBone(mActorSkeleton->chest, mActorSkeleton->neck);
 		debugDrawBone(mActorSkeleton->neck, mActorSkeleton->head);
@@ -208,8 +260,6 @@ namespace The5
 		debugDrawBone(mActorSkeleton->chest, mActorSkeleton->armUpperL);
 		debugDrawBone(mActorSkeleton->armUpperL, mActorSkeleton->armLowerL);
 		debugDrawBone(mActorSkeleton->armLowerL, mActorSkeleton->handL);
-
-		debugDrawBone(mActorSkeleton->root, mActorSkeleton->pelvis);
 
 		debugDrawBone(mActorSkeleton->pelvis, mActorSkeleton->legUpperL);
 		debugDrawBone(mActorSkeleton->legUpperL, mActorSkeleton->legLowerL);
@@ -232,6 +282,8 @@ namespace The5
 		mDebugDrawer.setColor(Color(0.0f, 0.0f, 1.0f, 1.0f));
 		mDebugDrawer.drawWireCone(start.SO->getTransform().pos(), normal, vec.length(), coneRadius +std::numeric_limits<float>().epsilon());
 		mDebugDrawer.drawLine(start.SO->getTransform().pos(), end.SO->getTransform().pos());
+		mDebugDrawer.setColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+		mDebugDrawer.drawWireSphere(start.SO->getTransform().pos(), 0.1f);
 	}
 
 	void CActorBody::debugDrawName(const ActorBodyBone & bone)
