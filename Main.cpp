@@ -14,6 +14,7 @@
 #include "The5DefaultAssets.h"
 #include "The5InputConfig.h"
 #include "CActorBody.h"
+#include "CMover.h"
 
 //#include "BansheeHelper.h"
 
@@ -77,7 +78,7 @@ int main()
 	sunlightC->setAttenuationRadius(1000.0f);
 	sunlightC->setIntensity(500000.0f);
 
-	gPhysics().setGravity(-Vector3().UNIT_Y*0.1f);
+	//gPhysics().setGravity(-Vector3().UNIT_Y*0.1f);
 	/*
 	HSceneObject skyboxSO = SceneObject::create("Skybox");
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
@@ -110,7 +111,8 @@ int main()
 	groundSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
 	HSceneObject player = SceneObject::create("Player");
-	HActorBody playerSO_CRenderable = player->addComponent<CActorBody>();
+	HActorBody player_body = player->addComponent<CActorBody>();
+	HMover player_mover = player->addComponent<CMover>();
 
 
 	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();

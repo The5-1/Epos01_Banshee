@@ -31,14 +31,14 @@ namespace bs
 		setName("CameraFlyer");
 
 		// Get handles for key bindings. Actual keys attached to these bindings will be registered during app start-up.
-		mMoveForward = VirtualButton("Forward");
-		mMoveBack = VirtualButton("Back");
-		mMoveLeft = VirtualButton("Left");
-		mMoveRight = VirtualButton("Right");
-		mFastMove = VirtualButton("Shift");
+		mMoveForward = VirtualButton("W");
+		mMoveBack = VirtualButton("S");
+		mMoveLeft = VirtualButton("A");
+		mMoveRight = VirtualButton("D");
+		mFastMove = VirtualButton("LShift");
 		mRotateCam = VirtualButton("RMB");
-		mHorizontalAxis = VirtualAxis("Horizontal");
-		mVerticalAxis = VirtualAxis("Vertical");
+		mHorizontalAxis = VirtualAxis("MouseX");
+		mVerticalAxis = VirtualAxis("MouseY");
 
 		mCamera = SO()->getComponent<CCamera>();
 	}

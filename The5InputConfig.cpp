@@ -13,20 +13,20 @@ namespace The5
 		auto inputConfig = VirtualInput::instance().getConfiguration();
 
 		// 0 or 1
-		inputConfig->registerButton("Forward", BC_W);
-		inputConfig->registerButton("Back", BC_S);
-		inputConfig->registerButton("Left", BC_A);
-		inputConfig->registerButton("Right", BC_D);
-		inputConfig->registerButton("Forward", BC_UP);
-		inputConfig->registerButton("Back", BC_DOWN);
-		inputConfig->registerButton("Left", BC_LEFT);
-		inputConfig->registerButton("Right", BC_RIGHT);
-		inputConfig->registerButton("Shift", BC_LSHIFT);
+		inputConfig->registerButton("W", BC_W);
+		inputConfig->registerButton("A", BC_A);
+		inputConfig->registerButton("D", BC_D);
+		inputConfig->registerButton("S", BC_S);
+		inputConfig->registerButton("Arrow_Up", BC_UP);
+		inputConfig->registerButton("Arrow_Down", BC_DOWN);
+		inputConfig->registerButton("Arrow_Left", BC_LEFT);
+		inputConfig->registerButton("Arrow_Right", BC_RIGHT);
+		inputConfig->registerButton("LShift", BC_LSHIFT);
 		inputConfig->registerButton("RMB", BC_MOUSE_RIGHT);
 
 		//[-1.0, 1.0]
-		inputConfig->registerAxis("Horizontal", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseX));
-		inputConfig->registerAxis("Vertical", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseY));
+		inputConfig->registerAxis("MouseX", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseX));
+		inputConfig->registerAxis("MouseY", VIRTUAL_AXIS_DESC((UINT32)InputAxis::MouseY));
 
 	}
 

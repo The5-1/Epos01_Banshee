@@ -4,8 +4,9 @@ using namespace bs;
 
 namespace The5
 {
-	ActorBodySkeleton::ActorBodySkeleton()
+	ActorBodySkeleton::ActorBodySkeleton(CActorBody& actorBodyComponent) : mActorBodyComponent(actorBodyComponent), root(actorBodyComponent.SO()) //must be done in initializer since refs can not be be nullptr
 	{
+
 		mPhysicsMat = PhysicsMaterial::create();
 		mPhysicsMat->setDynamicFriction(0.8);
 		mPhysicsMat->setStaticFriction(1.0);
@@ -18,7 +19,6 @@ namespace The5
 
 	void ActorBodySkeleton::createSceneObjects()
 	{
-		createBone_macro(root);
 		createBone_macro(pelvis);
 		createBone_macro(belly);
 		createBone_macro(chest);
@@ -40,7 +40,8 @@ namespace The5
 
 	void ActorBodySkeleton::parentSceneObjects()
 	{
-		pelvis.SO->setParent(root.SO);
+
+		pelvis.SO->setParent(root);
 
 		belly.SO->setParent(pelvis.SO);
 		chest.SO->setParent(belly.SO);
@@ -70,6 +71,13 @@ namespace The5
 		//root.joint = root.SO->addComponent<CSphericalJoint>();
 		//root.joint->setBody(JointBody::Target, belly.RB);
 
+
+		//attachBoneTo(pelvis, root);
+		attachBoneTo(belly, pelvis);
+		attachBoneTo(chest, belly);
+		attachBoneTo(neck, chest);
+		attachBoneTo(head, neck);
+
 		attachBoneTo(handR, armLowerR);
 		attachBoneTo(armLowerR, armUpperR);
 		attachBoneTo(armUpperR, chest);
@@ -78,12 +86,6 @@ namespace The5
 		attachBoneTo(armLowerL, armUpperL);
 		attachBoneTo(armUpperL, chest);
 
-		attachBoneTo(head, neck);
-		attachBoneTo(neck, chest);
-
-		attachBoneTo(chest, belly);
-		attachBoneTo(belly, pelvis);
-
 		attachBoneTo(footR, legLowerR);
 		attachBoneTo(legLowerR, legUpperR);
 		attachBoneTo(legUpperR, pelvis);
@@ -91,8 +93,6 @@ namespace The5
 		attachBoneTo(footL, legLowerL);
 		attachBoneTo(legLowerL, legUpperL);
 		attachBoneTo(legUpperL, pelvis);
-
-		attachBoneTo(pelvis, root);
 
 
 		/*
@@ -140,8 +140,8 @@ namespace The5
 #if 1
 		//sphere joint keeps the origins identical!
 		LimitConeRange limit;
-		limit.yLimitAngle = Degree(45.0f);
-		limit.zLimitAngle = Degree(45.0f);
+		limit.yLimitAngle = Degree(10.0f);
+		limit.zLimitAngle = Degree(10.0f);
 		child.joint = child.SO->addComponent<CSphericalJoint>();
 		child.joint->setBody(JointBody::Anchor, parent.RB); //Body the joint is attached to (if any)
 		child.joint->setBody(JointBody::Target, child.RB); //Body the joint is influencing
@@ -181,7 +181,7 @@ namespace The5
 
 	void ActorBodySkeleton::refreshStature()
 	{
-		root.SO->setPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//root->setPosition(Vector3(0.0f, 0.0f, 0.0f));
 		pelvis.SO->setPosition(Vector3(0.0f, stature.hipHeight, 0.0f));
 		belly.SO->setPosition(Vector3(0.0f, 0.0f, 0.0f));
 		chest.SO->setPosition(Vector3(0.0f, stature.chestHeight*0.5, 0.0f));
@@ -207,11 +207,13 @@ namespace The5
 	{
 		//http://docs.banshee3d.com/Native/bones.html
 		outBone.SO = SceneObject::create(name);
+		//if(name != "pelvis")
 		outBone.RB = outBone.SO->addComponent<CRigidbody>();
 		//outBone.RB->setMass(5.0f);
 		outBone.collider = outBone.SO->addComponent<CSphereCollider>();
 		((bs::HSphereCollider)outBone.collider)->setRadius(0.1f);
 		outBone.collider->setMaterial(mPhysicsMat);
+		outBone.collider->setRestOffset(0.01f);
 	}
 
 	void ActorBodySkeleton::createJoint(bs::String name, ActorBodyBone& outBone)
@@ -222,10 +224,8 @@ namespace The5
 
 	void CActorBody::onInitialized()
 	{
-
 		setName("ActorBody");
-
-		mActorSkeleton = std::make_unique<ActorBodySkeleton>();
+		mActorSkeleton = std::make_unique<ActorBodySkeleton>(*this);
 	}
 
 	void CActorBody::update()
@@ -257,7 +257,7 @@ namespace The5
 		mDebugDrawer._update();
 		mDebugDrawer.clear();
 		mDebugDrawer.setColor(Color(1.0f, 1.0f, 0.25f, 1.0f));
-		mDebugDrawer.drawCube(mActorSkeleton->root.SO->getTransform().pos(), 
+		mDebugDrawer.drawCube(mActorSkeleton->root->getTransform().pos(), 
 			Vector3(1.0f, 1.0f, 1.0f)*(
 				mActorSkeleton->stature.hipHeight 
 				+ mActorSkeleton->stature.chestHeight 
@@ -279,7 +279,7 @@ namespace The5
 		mDebugDrawer.drawWireSphere(mActorSkeleton->handL.SO->getTransform().pos(), mActorSkeleton->stature.handSize*0.5);
 
 
-		debugDrawBone(mActorSkeleton->root, mActorSkeleton->pelvis);
+		//debugDrawBone(mActorSkeleton->root, mActorSkeleton->pelvis);
 		
 		debugDrawBone(mActorSkeleton->pelvis, mActorSkeleton->belly);
 		debugDrawBone(mActorSkeleton->belly, mActorSkeleton->chest);

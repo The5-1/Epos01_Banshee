@@ -52,6 +52,7 @@
 #include "Material/BsMaterial.h"
 #include "Material/BsShader.h"
 
+#include "Input/BsInputConfiguration.h"
 #include "Input/BsVirtualInput.h"
 
 #include "Platform/BsCursor.h"

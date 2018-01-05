@@ -5,6 +5,8 @@
 
 namespace The5 {
 
+	class CActorBody;
+
 	struct ActorBodyStature
 	{
 		float hipHeight = 1.0f;
@@ -32,7 +34,7 @@ namespace The5 {
 	class ActorBodySkeleton
 	{
 	public:
-		ActorBodySkeleton();
+		ActorBodySkeleton(CActorBody& actorBodyComponent);
 		~ActorBodySkeleton() = default;
 
 		void createSceneObjects();
@@ -53,10 +55,12 @@ namespace The5 {
 #define createBone_macro(name) createBone(#name, name)
 
 		ActorBodyStature stature;
+
+		CActorBody& mActorBodyComponent;
 	
 		bs::HPhysicsMaterial mPhysicsMat;
 
-		ActorBodyBone root;
+		bs::HSceneObject root;
 
 		ActorBodyBone pelvis;
 		ActorBodyBone belly;
