@@ -107,8 +107,6 @@ namespace The5 {
 
 		void debugDrawSkeleton();
 		void debugDrawBone(const ActorBodyBone& start, const ActorBodyBone& end);
-		void debugDrawName(const ActorBodyBone& bone);
-
 	};
 
 	typedef bs::GameObjectHandle<CActorBody> HActorBody;

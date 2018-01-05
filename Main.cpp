@@ -77,12 +77,13 @@ int main()
 	sunlightC->setAttenuationRadius(1000.0f);
 	sunlightC->setIntensity(500000.0f);
 
-	//gPhysics().setGravity(Vector3().ZERO);
-
+	gPhysics().setGravity(-Vector3().UNIT_Y*0.1f);
+	/*
 	HSceneObject skyboxSO = SceneObject::create("Skybox");
 	HSkybox skyboxC = skyboxSO->addComponent<CSkybox>();
 	skyboxC->setTexture(DefaultAssets::defaultSkybox);
 	skyboxC->setBrightness(0.1f);
+	*/
 
 	float sphereRadius = 0.5;
 	HSceneObject sphereSO = SceneObject::create("Sphere");
@@ -93,8 +94,8 @@ int main()
 	HSphereCollider sphereSO_Collider = sphereSO->addComponent<CSphereCollider>();
 	sphereSO_Collider->setRadius(1.0f);
 	HRenderable sphereSO_CRenderable = sphereSO->addComponent<CRenderable>();
-	//sphereSO_CRenderable->setMesh(DefaultAssets::defaultSphere);
-	sphereSO_CRenderable->setMesh(BuiltinResources::instancePtr()->getMesh(BuiltinMesh::Sphere));
+	sphereSO_CRenderable->setMesh(DefaultAssets::defaultCube);
+	//sphereSO_CRenderable->setMesh(BuiltinResources::instancePtr()->getMesh(BuiltinMesh::Sphere));
 	sphereSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
 	//DrawHelper::ShapeMeshData(ShapeMeshes3D::solidSphere()); //???

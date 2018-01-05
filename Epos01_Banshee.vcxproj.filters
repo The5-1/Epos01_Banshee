@@ -8,9 +8,6 @@
     <ClCompile Include="The5Application.cpp">
       <Filter>Source Files\The5Banshee</Filter>
     </ClCompile>
-    <ClCompile Include="MeshFactory.cpp">
-      <Filter>Source Files\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="CameraFlyer.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
     </ClInclude>
     <ClInclude Include="The5Application.h">
       <Filter>Source Files\The5Banshee</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshFactory.h">
-      <Filter>Source Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="CameraFlyer.h">
       <Filter>Source Files\Components</Filter>

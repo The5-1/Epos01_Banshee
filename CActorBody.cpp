@@ -12,6 +12,8 @@ namespace The5
 
 		createSceneObjects();
 		parentSceneObjects();
+		refreshStature();
+		joinAllBones();
 	}
 
 	void ActorBodySkeleton::createSceneObjects()
@@ -90,6 +92,8 @@ namespace The5
 		attachBoneTo(legLowerL, legUpperL);
 		attachBoneTo(legUpperL, pelvis);
 
+		attachBoneTo(pelvis, root);
+
 
 		/*
 		LimitConeRange limit;
@@ -132,15 +136,47 @@ namespace The5
 
 	void ActorBodySkeleton::attachBoneTo(ActorBodyBone & child, ActorBodyBone & parent)
 	{
-		LimitConeRange limit;
-		limit.yLimitAngle = Degree(10.0f);
-		limit.zLimitAngle = Degree(10.0f);
 
+#if 1
+		//sphere joint keeps the origins identical!
+		LimitConeRange limit;
+		limit.yLimitAngle = Degree(45.0f);
+		limit.zLimitAngle = Degree(45.0f);
 		child.joint = child.SO->addComponent<CSphericalJoint>();
+		child.joint->setBody(JointBody::Anchor, parent.RB); //Body the joint is attached to (if any)
+		child.joint->setBody(JointBody::Target, child.RB); //Body the joint is influencing
+		child.joint->setTransform(JointBody::Target, Vector3(0.3f, 0.0f, 0.0f), Quaternion().IDENTITY);
+		((HSphericalJoint)child.joint)->setLimit(limit);
+		((HSphericalJoint)child.joint)->setFlag(SphericalJointFlag::Limit,true);
+		child.joint->setEnableCollision(false);
+#elif 0
+		child.joint = child.SO->addComponent<CDistanceJoint>();
 		child.joint->setBody(JointBody::Anchor, parent.RB);
 		child.joint->setBody(JointBody::Target, child.RB);
-		((HSphericalJoint)child.joint)->setLimit(limit);
+		((HDistanceJoint)child.joint)->setMinDistance(0.2f);
+		((HDistanceJoint)child.joint)->setMaxDistance(0.2f);
+		((HDistanceJoint)child.joint)->setFlag(DistanceJointFlag::MinDistance, true);
+		((HDistanceJoint)child.joint)->setFlag(DistanceJointFlag::MaxDistance, true);
 		child.joint->setEnableCollision(false);
+#elif 1
+		child.joint = child.SO->addComponent<CD6Joint>();
+		child.joint->setBody(JointBody::Target, child.RB); //Body the joint is influencing
+		child.joint->setBody(JointBody::Anchor, parent.RB); //Body the joint is attached to (if any)
+															// A limit representing a maximum distance of 20 units
+		LimitLinear limitX;
+		limitX.extent = 20.0f;
+		child.joint->setTransform(JointBody::Target, Vector3(0.0f,1.0f,1.0f), Quaternion().IDENTITY);
+		((HD6Joint)child.joint)->setLimitLinear(limitX);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::X, D6JointMotion::Limited);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::Y, D6JointMotion::Locked);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::Z, D6JointMotion::Locked);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::Twist, D6JointMotion::Locked);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::SwingY, D6JointMotion::Locked);
+		((HD6Joint)child.joint)->setMotion(D6JointAxis::SwingZ, D6JointMotion::Locked);
+		child.joint->setEnableCollision(false);
+
+#endif
+
 	}
 
 	void ActorBodySkeleton::refreshStature()
@@ -188,15 +224,13 @@ namespace The5
 	{
 
 		setName("ActorBody");
-		mActorSkeleton = std::make_unique<ActorBodySkeleton>();
 
-		mActorSkeleton->refreshStature();
-		mActorSkeleton->joinAllBones();
+		mActorSkeleton = std::make_unique<ActorBodySkeleton>();
 	}
 
 	void CActorBody::update()
 	{
-		debugDraw();
+		debugDrawSkeleton();
 	}
 
 
@@ -212,13 +246,12 @@ namespace The5
 	}
 
 
-
 	void CActorBody::refreshStature()
 	{
 		mActorSkeleton->refreshStature();
 	}
 
-	void CActorBody::debugDraw()
+	void CActorBody::debugDrawSkeleton()
 	{
 		
 		mDebugDrawer._update();
@@ -284,11 +317,6 @@ namespace The5
 		mDebugDrawer.drawLine(start.SO->getTransform().pos(), end.SO->getTransform().pos());
 		mDebugDrawer.setColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
 		mDebugDrawer.drawWireSphere(start.SO->getTransform().pos(), 0.1f);
-	}
-
-	void CActorBody::debugDrawName(const ActorBodyBone & bone)
-	{
-		
 	}
 
 }

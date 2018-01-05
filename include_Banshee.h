@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BsPrerequisites.h"
+#include "BsEngineConfig.h"
 
 #include "BsApplication.h"
 #include "CoreThread/BsCoreThread.h"
@@ -101,13 +102,13 @@
 #include "Components/BsCHingeJoint.h"
 #include "Physics/BsSphericalJoint.h"
 #include "Components/BsCSphericalJoint.h"
-
+#include "Physics/BsDistanceJoint.h"
+#include "Components/BsCDistanceJoint.h"
+#include "Physics/BsD6Joint.h"
+#include "Components/BsCD6Joint.h"
 
 #include "Components/BsCCamera.h"
 #include "Components/BsCRenderable.h"
 #include "Components/BsCLight.h"
 #include "Components/BsCSkybox.h"
-
-
-#include "BsEngineConfig.h"
 

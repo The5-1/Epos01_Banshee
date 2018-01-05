@@ -23,15 +23,17 @@ namespace The5 {
 
 		bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale, bool forceInport)
 		{
-			const bool debugPrint = The5::Utility::showImportDebug;
+			bool debugPrint = The5::Utility::showImportDebug;
+			bool forcedInportActive = (forceInport == true || The5::Utility::forceRebuildAssetOnImport == true);
+
 			Path assetPath = convertPathToBansheeAssetDir(originalFilePath,"Meshes");
 
-			//Try loading existing exported Asset
-			if (debugPrint) Debug().logDebug("Trying to loading existing .asset from " + bs::toString(assetPath.toPlatformString()) + " ...");
 			HMesh model = gResources().load<Mesh>(assetPath);
-			if (model == nullptr || forceInport == true || The5::Utility::forceRebuildAssetOnImport == true) // If Mesh file doesn't exist, import from the source file.
+			if (model == nullptr || forcedInportActive) // If Mesh file doesn't exist, import from the source file.
 			{
-				if (debugPrint) gDebug().logDebug("Existing .asset not found, importing mesh from " + bs::toString(originalFilePath.toPlatformString()));
+				if (debugPrint && model == nullptr) gDebug().logDebug("Existing .asset file not found!");
+				else if (debugPrint && forcedInportActive) gDebug().logDebug("Forced re-import of raw mesh!");
+				if (debugPrint) gDebug().logDebug("Inporting mesh from " + bs::toString(originalFilePath.toPlatformString()));
 				// When importing you may specify optional import options that control how is the asset imported.
 				SPtr<ImportOptions> meshImportOptions = Importer::instance().createImportOptions(originalFilePath);
 
@@ -40,10 +42,11 @@ namespace The5 {
 				if (rtti_is_of_type<MeshImportOptions>(meshImportOptions))
 				{
 					MeshImportOptions* importOptions = static_cast<MeshImportOptions*>(meshImportOptions.get());
-
 					importOptions->setImportScale(scale);
 
 					model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
+
+					if (debugPrint) gDebug().logDebug("Model dimensions: " + bs::toString(model->getProperties().getBounds().getBox().getSize()));
 
 					// Save for later use, so we don't have to import on the next run.
 					if (debugPrint) gDebug().logDebug("Saving .asset to " + bs::toString(assetPath.toPlatformString()));
