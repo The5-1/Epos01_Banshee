@@ -8,16 +8,25 @@ namespace The5 {
 	struct ActorBodyStature
 	{
 		float hipHeight = 1.0f;
-		float chestHeight = 0.8f;
-		float neckHeight = 0.1f;
-		float armLength = 1.0f;
+		float chestHeight = 0.6f;
+		float neckHeight = 0.15f;
+		float armLength = 0.8f;
 
-		float chestWidth = 0.3f; //Shoulder
-		float hipWidth = 0.2f; //Pelvis
+		float chestWidth = 0.4f; //Shoulder
+		float hipWidth = 0.25f; //Pelvis
 
-		float headSize = 0.1f;
-		float handSize = 0.05f;
-		float footSize = 0.07f;
+		float headSize = 0.2f;
+		float handSize = 0.1f;
+		float footSize = 0.15f;
+	};
+
+	struct ActorBodyBone
+	{
+		bs::HSceneObject SO;
+		bs::HRigidbody RB;
+		bs::HCollider collider;
+		bs::HJoint joint;
+		bs::HBone bone;
 	};
 
 	class ActorBodySkeleton
@@ -28,36 +37,42 @@ namespace The5 {
 
 		void createSceneObjects();
 
+		void parentSceneObjects();
+
 		void joinSceneObjects();
+
 
 		void refreshStature();
 
-		void createBone(bs::String name, bs::HSceneObject& outSO);
+		void createBone(bs::String name, ActorBodyBone& outBone);
+#define createBone_macro(name) createBone(#name, name)
+
+		void createJoint(bs::String name, ActorBodyBone& outBone);
 #define createBone_macro(name) createBone(#name, name)
 
 		ActorBodyStature stature;
 	
-		bs::HSceneObject root;
+		ActorBodyBone root;
 
-		bs::HSceneObject pelvis;
-		bs::HSceneObject belly;
-		bs::HSceneObject chest;
-		bs::HSceneObject neck;
-		bs::HSceneObject head;
+		ActorBodyBone pelvis;
+		ActorBodyBone belly;
+		ActorBodyBone chest;
+		ActorBodyBone neck;
+		ActorBodyBone head;
 
-		bs::HSceneObject legUpperR;
-		bs::HSceneObject legUpperL;
-		bs::HSceneObject legLowerR;
-		bs::HSceneObject legLowerL;
-		bs::HSceneObject footR;
-		bs::HSceneObject footL;
+		ActorBodyBone legUpperR;
+		ActorBodyBone legUpperL;
+		ActorBodyBone legLowerR;
+		ActorBodyBone legLowerL;
+		ActorBodyBone footR;
+		ActorBodyBone footL;
 
-		bs::HSceneObject armUpperR;
-		bs::HSceneObject armUpperL;
-		bs::HSceneObject armLowerR;
-		bs::HSceneObject armLowerL;
-		bs::HSceneObject handR;
-		bs::HSceneObject handL;
+		ActorBodyBone armUpperR;
+		ActorBodyBone armUpperL;
+		ActorBodyBone armLowerR;
+		ActorBodyBone armLowerL;
+		ActorBodyBone handR;
+		ActorBodyBone handL;
 	};
 
 	/** documentation */
@@ -73,8 +88,6 @@ namespace The5 {
 
 		std::unique_ptr<ActorBodySkeleton> mActorSkeleton;
 
-		ActorBodyStature mActorStature;
-
 		virtual void onInitialized() override;
 
 		virtual void update() override;
@@ -84,6 +97,8 @@ namespace The5 {
 		void refreshStature();
 
 		void debugDraw();
+		void debugDrawBone(const ActorBodyBone& start, const ActorBodyBone& end);
+		void debugDrawName(const ActorBodyBone& bone);
 
 	};
 

@@ -104,6 +104,7 @@ int main()
 	
 	HSceneObject player = SceneObject::create("Player");
 	HActorBody playerSO_CRenderable = player->addComponent<CActorBody>();
+	gPhysics().setGravity(Vector3().ZERO);
 
 	//HCharacterController playerSO_Controller = playerSO->addComponent<CCharacterController>();
 	//playerSO_Controller->setHeight(playerHeight);

@@ -137,8 +137,8 @@ namespace The5
 		mMainCameraC->setRenderSettings(The5Application::defaultRenderSettings());
 
 
-		mMainCameraSO->setPosition(Vector3(8.0, 1.0f, 0.0f));
-		mMainCameraSO->lookAt(Vector3(0.0, 3.0, 0.0));
+		mMainCameraSO->setPosition(Vector3(0.0, 1.0f, 4.0f));
+		mMainCameraSO->lookAt(Vector3(0.0, 1.0, 0.0));
 
 		SPtr<RenderWindow> window = gApplication().getPrimaryWindow();
 		const RenderWindowProperties& windowProps = window->getProperties();
