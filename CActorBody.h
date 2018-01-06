@@ -31,6 +31,11 @@ namespace The5 {
 		bs::HBone bone;
 	};
 
+	struct ActorBodyRoot : public ActorBodyBone
+	{
+		bs::HAnimation animation;
+	};
+
 	class ActorBodySkeleton
 	{
 	public:
@@ -41,7 +46,9 @@ namespace The5 {
 
 		void parentSceneObjects();
 
-		
+		void parentSceneObjectsFlat();
+
+		void setupRoot();
 
 		void joinAllBones();
 
@@ -64,7 +71,7 @@ namespace The5 {
 	
 		bs::HPhysicsMaterial mPhysicsMat;
 
-		ActorBodyBone root;
+		ActorBodyRoot root;
 
 		ActorBodyBone pelvis;
 		ActorBodyBone belly;

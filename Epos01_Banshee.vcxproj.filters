@@ -67,6 +67,9 @@
     <ClInclude Include="CMover.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="FABRIK.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -89,6 +92,9 @@
     </Filter>
     <Filter Include="Source Files\The5Banshee">
       <UniqueIdentifier>{4295d8a4-8a02-48e8-9fde-e065b40e4e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{06aae5ef-7325-43bf-9cda-b82b8304edf6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

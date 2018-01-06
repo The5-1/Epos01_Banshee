@@ -290,6 +290,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="CameraFlyer.h" />
     <ClInclude Include="CComboState.h" />
     <ClInclude Include="CMover.h" />
+    <ClInclude Include="FABRIK.h" />
     <ClInclude Include="ForwardDeclarations.h" />
     <ClInclude Include="include_Banshee.h" />
     <ClInclude Include="include_STL.h" />

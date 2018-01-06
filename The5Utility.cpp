@@ -23,7 +23,7 @@ namespace The5 {
 
 		bs::HMesh loadMesh(const bs::Path& originalFilePath, float scale, bool forceInport)
 		{
-			bool debugPrint = The5::Utility::showImportDebug;
+			bool debugPrint = (The5::Utility::showImportDebug || The5::Utility::forceRebuildAssetOnImport == true);
 			bool forcedInportActive = (forceInport == true || The5::Utility::forceRebuildAssetOnImport == true);
 
 			Path assetPath = convertPathToBansheeAssetDir(originalFilePath,"Meshes");
@@ -42,7 +42,7 @@ namespace The5 {
 				if (rtti_is_of_type<MeshImportOptions>(meshImportOptions))
 				{
 					MeshImportOptions* importOptions = static_cast<MeshImportOptions*>(meshImportOptions.get());
-					importOptions->setImportScale(scale);
+					importOptions->setImportScale(scale*The5::Utility::defaultScaleFactor);
 
 					model = gImporter().import<Mesh>(originalFilePath, meshImportOptions);
 

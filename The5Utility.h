@@ -13,6 +13,9 @@ namespace The5 {
 		/** force to rebuild .asset files */
 		const bool forceRebuildAssetOnImport = false;
 
+		/** Default Scale Factor (FBX importer assumes cm, Banshee is in meters*/
+		const float defaultScaleFactor = 100.0f;
+
 		bs::Path convertPathToBansheeAssetDir(const bs::Path& originalFilePath, const std::string& typeFolder);
 
 		/** import a mesh and save it as Banshee .asset if it does not exist yet**/

@@ -12,18 +12,14 @@ namespace The5
 		mPhysicsMat->setStaticFriction(0.5);
 
 		createSceneObjects();
-		parentSceneObjects();
+		parentSceneObjectsFlat();
 		//refreshStature();
 		joinAllBones();
 	}
 
 	void ActorBodySkeleton::createSceneObjects()
 	{
-		root.SO = mActorBodyComponent.SO();
-		root.RB = root.SO->getComponent<CRigidbody>();
-		if (root.RB == nullptr)
-			root.RB = root.SO->addComponent<CRigidbody>();
-		root.RB->setIsKinematic(true);
+		setupRoot();
 
 		createBone_macro(pelvis);
 		createBone_macro(belly);
@@ -71,8 +67,42 @@ namespace The5
 		footR.SO->setParent(legLowerR.SO);
 	}
 
+	void ActorBodySkeleton::parentSceneObjectsFlat()
+	{
 
+		pelvis.SO->setParent(root.SO);
 
+		belly.SO->setParent(root.SO);
+		chest.SO->setParent(root.SO);
+		neck.SO->setParent(root.SO);
+		head.SO->setParent(root.SO);
+
+		armUpperL.SO->setParent(root.SO);
+		armLowerL.SO->setParent(root.SO);
+		handL.SO->setParent(root.SO);
+
+		armUpperR.SO->setParent(root.SO);
+		armLowerR.SO->setParent(root.SO);
+		handR.SO->setParent(root.SO);
+
+		legUpperL.SO->setParent(root.SO);
+		legLowerL.SO->setParent(root.SO);
+		footL.SO->setParent(root.SO); 
+
+		legUpperR.SO->setParent(root.SO);
+		legLowerR.SO->setParent(root.SO);
+		footR.SO->setParent(root.SO);
+	}
+
+	void ActorBodySkeleton::setupRoot()
+	{
+		root.SO = mActorBodyComponent.SO();
+		//root.RB = root.SO->getComponent<CRigidbody>();
+		//if (root.RB == nullptr)
+			//root.RB = root.SO->addComponent<CRigidbody>();
+		//root.RB->setIsKinematic(true);
+		root.animation = root.SO->addComponent<CAnimation>();
+	}
 
 	void ActorBodySkeleton::joinAllBones()
 	{
@@ -233,6 +263,8 @@ namespace The5
 		((bs::HSphereCollider)outBone.collider)->setRadius(0.1f);
 		outBone.collider->setMaterial(mPhysicsMat);
 		outBone.collider->setRestOffset(0.01f);
+		outBone.bone = outBone.SO->addComponent<CBone>();
+		outBone.bone->setBoneName(name);
 	}
 
 	void ActorBodySkeleton::createJoint(bs::String name, ActorBodyBone& outBone)
@@ -335,6 +367,7 @@ namespace The5
 		mDebugDrawer.drawLine(start.SO->getTransform().pos(), end.SO->getTransform().pos());
 		mDebugDrawer.setColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
 		mDebugDrawer.drawWireSphere(start.SO->getTransform().pos(), 0.1f);
+		mDebugDrawer.drawWireSphere(end.SO->getTransform().pos(), 0.1f);
 	}
 
 }

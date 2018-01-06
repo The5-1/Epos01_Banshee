@@ -63,8 +63,8 @@ int main()
 
 	CrashHandler::shutDown(); //this keeps banshee from spamming crash logs
 
-	Vector3 aabbsize = DefaultAssets::defaultCube->getProperties().getBounds().getBox().getSize();
-	gDebug().logDebug("defaultCube AABB size: " + bs::toString(aabbsize));
+	//Vector3 aabbsize = DefaultAssets::defaultCube->getProperties().getBounds().getBox().getSize();
+	//gDebug().logDebug("defaultCube AABB size: " + bs::toString(aabbsize));
 	//The5::Utility::convertPathToBansheeAssetDir(MESH_SPONZA.c_str(), "Meshes");
 
 	HSceneObject sunlightSO = SceneObject::create("Sun");
@@ -72,7 +72,7 @@ int main()
 	sunlightSO->lookAt(Vector3(0.0, 0.0, 0.0));
 	HLight sunlightC = sunlightSO->addComponent<CLight>();
 	//sunlightC->setType(LightType::Directional);
-	sunlightC->setSourceRadius(50.0); //Area light, must be 0.25 or so for sun
+	sunlightC->setSourceRadius(10.0); //Area light, must be 0.25 or so for sun
 	sunlightC->setCastsShadow(true);
 	sunlightC->setUseAutoAttenuation(false);
 	sunlightC->setAttenuationRadius(1000.0f);
@@ -86,7 +86,7 @@ int main()
 	skyboxC->setBrightness(0.1f);
 	*/
 
-	float sphereRadius = 0.5;
+	float sphereRadius = 0.25;
 	HSceneObject sphereSO = SceneObject::create("Sphere");
 	sphereSO->setPosition(Vector3(0.0f, 4.0f, 0.0f));
 	sphereSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*sphereRadius);
@@ -95,14 +95,14 @@ int main()
 	HSphereCollider sphereSO_Collider = sphereSO->addComponent<CSphereCollider>();
 	sphereSO_Collider->setRadius(1.0f);
 	HRenderable sphereSO_CRenderable = sphereSO->addComponent<CRenderable>();
-	sphereSO_CRenderable->setMesh(DefaultAssets::defaultCube);
-	//sphereSO_CRenderable->setMesh(BuiltinResources::instancePtr()->getMesh(BuiltinMesh::Sphere));
+	//sphereSO_CRenderable->setMesh(DefaultAssets::defaultCube);
+	sphereSO_CRenderable->setMesh(BuiltinResources::instancePtr()->getMesh(BuiltinMesh::Sphere));
 	sphereSO_CRenderable->setMaterial(DefaultAssets::defaultPBRMaterial);
 	
 	//DrawHelper::ShapeMeshData(ShapeMeshes3D::solidSphere()); //???
 
 	HSceneObject groundSO = SceneObject::create("Ground");
-	groundSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10000.0);
+	groundSO->setScale(Vector3(1.0f, 1.0f, 1.0f)*10.0);
 	//groundSO->lookAt(Vector3(0.1f, 0.1f, 1.0f),Vector3(0.0f,1.0f,0.0f));
 	HPlaneCollider groundSO_Collider = groundSO->addComponent<CPlaneCollider>();
 	groundSO_Collider->setNormal(Vector3(0.0f, 1.0f, 0.0f));
@@ -135,10 +135,12 @@ int main()
 	//DebugDraw::instancePtr()->drawWireCube(Vector3(0.0f, 0.5f, 0.0f), Vector3(0.5,0.5,0.5));
    
 	//The5Application::getThe5Application().mainCamera()->setNearClipDistance(0.0001f);
-	std::cout << "Camera Name: " << The5Application::getThe5Application().mainCamera()->getName() << std::endl;
-	std::cout << "near: " << The5Application::getThe5Application().mainCamera()->getNearClipDistance() << std::endl;
-	std::cout << "far: " << The5Application::getThe5Application().mainCamera()->getFarClipDistance() << std::endl;
-	std::cout << "priority: " << The5Application::getThe5Application().mainCamera()->getPriority() << std::endl;
+	//std::cout << "Camera Name: " << The5Application::getThe5Application().mainCamera()->getName() << std::endl;
+	//std::cout << "near: " << The5Application::getThe5Application().mainCamera()->getNearClipDistance() << std::endl;
+	//std::cout << "far: " << The5Application::getThe5Application().mainCamera()->getFarClipDistance() << std::endl;
+	//std::cout << "priority: " << The5Application::getThe5Application().mainCamera()->getPriority() << std::endl;
+	
+	
 	/*
 	HSceneObject testSO = SceneObject::create("Sphere");
 	HRenderable testSO_CRenderable = testSO->addComponent<CRenderable>();
@@ -155,9 +157,9 @@ int main()
 		{
 			HSceneObject spam = SceneObject::create("Grid");
 			spam->move(Vector3(x*0.5f, 0.0f, z*0.5f));
-			spam->setScale(Vector3(1.0, 10.0, 1.0)*10.0f);
+			spam->setScale(Vector3(0.1f, 0.1f, 0.1f));
 			HBoxCollider bc = spam->addComponent<CBoxCollider>();
-			bc->setExtents(Vector3().ONE*0.01f);
+			bc->setExtents(Vector3().ONE);
 			HRenderable spamR = spam->addComponent<CRenderable>();
 			spamR->setMesh(DefaultAssets::defaultCube);
 			spamR->setMaterial(DefaultAssets::defaultPBRMaterial);
